@@ -1,0 +1,14 @@
+{
+  "about": {
+    "title": "À propos de nous"
+  },
+  "home": {
+    "getStarted": "Commencez par éditer",
+    "saveChanges": "Enregistrez et voyez vos changements instantanément.",
+    "deployNow": "Déployer maintenant",
+    "readDocs": "Lire notre documentation",
+    "learn": "Apprendre",
+    "examples": "Exemples",
+    "goToNextjs": "Aller à nextjs.org →"
+  }
+} 
