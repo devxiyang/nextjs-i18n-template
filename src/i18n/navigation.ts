@@ -1,5 +1,4 @@
 import { createNavigation } from 'next-intl/navigation';
-import { Pathnames } from 'next-intl/routing';
 import { siteConfig } from '@/config/site.config';
 
 export const locales = siteConfig.locales;
