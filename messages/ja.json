@@ -1,5 +1,14 @@
 {
   "about": {
     "title": "私たちについて"
+  },
+  "home": {
+    "getStarted": "編集を開始する",
+    "saveChanges": "保存して変更をすぐに確認できます。",
+    "deployNow": "今すぐデプロイ",
+    "readDocs": "ドキュメントを読む",
+    "learn": "学ぶ",
+    "examples": "例",
+    "goToNextjs": "nextjs.orgに移動 →"
   }
 } 

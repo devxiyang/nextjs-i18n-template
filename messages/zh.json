@@ -1,5 +1,14 @@
 {
   "about": {
     "title": "关于我们"
+  },
+  "home": {
+    "getStarted": "开始编辑",
+    "saveChanges": "保存并立即查看您的更改。",
+    "deployNow": "立即部署",
+    "readDocs": "阅读文档",
+    "learn": "学习",
+    "examples": "示例",
+    "goToNextjs": "前往 nextjs.org →"
   }
 }
