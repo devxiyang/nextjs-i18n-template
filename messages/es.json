@@ -1,3 +1,5 @@
 {
-  "about": "Sobre nosotros"
+  "about": {
+    "title": "Sobre nosotros"
+  }
 } 
