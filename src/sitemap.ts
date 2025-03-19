@@ -1,15 +1,12 @@
 import { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
-
+import { navigation, siteConfig } from '@/config/site.config'
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ''
   
   // 定义所有需要生成站点地图的路径
-  const routes = [
-    '',  // 首页
-    '/templates', // 模板页
-    '/builder', // 简历构建器页面
-  ]
+  // 根据配置的语言定义路由
+  const routes = navigation.map((item: any) => item.href)
 
   // 为每个语言生成对应的 URL
   const sitemapEntries = routing.locales.flatMap(locale => 
