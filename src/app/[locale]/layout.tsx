@@ -28,17 +28,21 @@ export function generateStaticParams() {
 
 export default async function RootLayout({
   children,
-  params: { locale }
+  params
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+
   let messages;
   try {
     messages = (await import(`../../../messages/${locale}.json`)).default;
   } catch (error) {
     notFound();
   }
+
+
 
   return (
     <html lang={locale} suppressHydrationWarning>
