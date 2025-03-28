@@ -1,4 +1,13 @@
 {
+  "common": {
+    "language": "Idioma",
+    "siteTitle": "{siteName} - Plantilla i18n",
+    "toggleTheme": "Cambiar tema",
+    "nav": {
+      "home": "Inicio",
+      "about": "Sobre nosotros"
+    }
+  },
   "about": {
     "title": "Sobre nosotros"
   },

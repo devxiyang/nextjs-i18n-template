@@ -1,4 +1,13 @@
 {
+  "common": {
+    "language": "Langue",
+    "siteTitle": "{siteName} - Modèle i18n",
+    "toggleTheme": "Changer de thème",
+    "nav": {
+      "home": "Accueil",
+      "about": "À propos"
+    }
+  },
   "about": {
     "title": "À propos de nous"
   },
