@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation';
 import { siteConfig } from '@/config/site.config';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import ThemeSwitcher from '@/components/ThemeSwitcher';
 
 export default function Header() {
   const t = useTranslations('common');
@@ -20,7 +21,7 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full py-4 px-6 bg-gray-900 text-white">
+    <header className="w-full py-4 px-6 bg-gray-900 text-white dark:bg-gray-900 dark:text-white">
       <div className="container mx-auto flex justify-between items-center">
         <Link 
           href="/"
@@ -45,6 +46,8 @@ export default function Header() {
           
           <LocaleSwitcher />
           
+          <ThemeSwitcher />
+          
           {/* Mobile Menu Button */}
           <button 
             className="md:hidden p-2 text-gray-400 hover:text-white focus:outline-none" 
@@ -58,7 +61,7 @@ export default function Header() {
       
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-gray-900 border-t border-gray-800 py-4 z-50">
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-gray-900 border-t border-gray-800 py-4 z-50 dark:bg-gray-900 dark:border-gray-800">
           <nav className="container mx-auto px-6 flex flex-col gap-4">
             {navigation.map((item) => (
               <Link

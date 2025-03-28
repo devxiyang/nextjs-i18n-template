@@ -2,6 +2,7 @@
   "common": {
     "language": "语言",
     "siteTitle": "{siteName} - 国际化模板",
+    "toggleTheme": "切换主题",
     "nav": {
       "home": "首页",
       "about": "关于"

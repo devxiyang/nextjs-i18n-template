@@ -2,6 +2,7 @@
   "common": {
     "language": "Sprache",
     "siteTitle": "{siteName} - i18n Vorlage",
+    "toggleTheme": "Thema wechseln",
     "nav": {
       "home": "Startseite",
       "about": "Über uns"

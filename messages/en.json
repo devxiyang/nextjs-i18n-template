@@ -2,6 +2,7 @@
   "common": {
     "language": "Language",
     "siteTitle": "{siteName} - i18n Template",
+    "toggleTheme": "Toggle theme",
     "nav": {
       "home": "Home",
       "about": "About"

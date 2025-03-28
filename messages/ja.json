@@ -2,6 +2,7 @@
   "common": {
     "language": "言語",
     "siteTitle": "{siteName} - 国際化テンプレート",
+    "toggleTheme": "テーマ切り替え",
     "nav": {
       "home": "ホーム",
       "about": "について"
