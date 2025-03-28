@@ -1,4 +1,12 @@
 {
+  "common": {
+    "language": "语言",
+    "siteTitle": "{siteName} - 国际化模板",
+    "nav": {
+      "home": "首页",
+      "about": "关于"
+    }
+  },
   "about": {
     "title": "关于我们"
   },

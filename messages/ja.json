@@ -1,4 +1,12 @@
 {
+  "common": {
+    "language": "言語",
+    "siteTitle": "{siteName} - 国際化テンプレート",
+    "nav": {
+      "home": "ホーム",
+      "about": "について"
+    }
+  },
   "about": {
     "title": "私たちについて"
   },

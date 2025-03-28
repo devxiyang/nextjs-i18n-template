@@ -1,4 +1,12 @@
 {
+  "common": {
+    "language": "Language",
+    "siteTitle": "{siteName} - i18n Template",
+    "nav": {
+      "home": "Home",
+      "about": "About"
+    }
+  },
   "about": {
     "title": "About us"
   },

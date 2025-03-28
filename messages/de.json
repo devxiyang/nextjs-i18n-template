@@ -1,4 +1,12 @@
 {
+  "common": {
+    "language": "Sprache",
+    "siteTitle": "{siteName} - i18n Vorlage",
+    "nav": {
+      "home": "Startseite",
+      "about": "Über uns"
+    }
+  },
   "about": {
     "title": "Über uns"
   },
