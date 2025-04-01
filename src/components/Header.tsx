@@ -35,7 +35,7 @@ export default function Header() {
 
     fetchUser();
 
-    // 设置 Supabase 认证状态变化监听器
+    // Set up Supabase auth state change listener
     const supabase = createClient();
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
@@ -80,7 +80,7 @@ export default function Header() {
           
           <ThemeSwitcher />
           
-          {/* 用户菜单 */}
+          {/* User Menu */}
           {isLoading ? null : user ? (
             <UserAccountNav user={user} />
           ) : (
@@ -115,7 +115,7 @@ export default function Header() {
               </Link>
             ))}
             
-            {/* 移动端添加登录/注册链接 */}
+            {/* Add login/register link on mobile */}
             {!user && (
               <Link
                 href="/sign-in"
