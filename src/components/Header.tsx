@@ -53,11 +53,11 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full py-4 px-6 bg-gray-900 text-white dark:bg-gray-900 dark:text-white">
+    <header className="w-full py-4 px-6 bg-background text-foreground">
       <div className="container mx-auto flex justify-between items-center">
         <Link 
           href="/"
-          className="text-xl font-bold hover:text-gray-300 transition-colors"
+          className="text-xl font-bold hover:text-foreground/70 transition-colors"
         >
           {t('siteTitle', { siteName: siteConfig.name })}
         </Link>
@@ -69,7 +69,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="hover:text-gray-300 transition-colors"
+                className="hover:text-foreground/70 transition-colors"
               >
                 {t(`nav.${item.name.toLowerCase()}`)}
               </Link>
@@ -84,14 +84,14 @@ export default function Header() {
           {isLoading ? null : user ? (
             <UserAccountNav user={user} />
           ) : (
-            <Button asChild variant="ghost" size="sm" className="text-white hover:text-gray-300">
+            <Button asChild variant="ghost" size="sm" className="hover:text-foreground/70">
               <Link href="/sign-in">{authT('header.signIn')}</Link>
             </Button>
           )}
           
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden p-2 text-gray-400 hover:text-white focus:outline-none" 
+            className="md:hidden p-2 text-foreground/70 hover:text-foreground focus:outline-none" 
             onClick={toggleMenu}
             aria-label={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
           >
@@ -102,13 +102,13 @@ export default function Header() {
       
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-gray-900 border-t border-gray-800 py-4 z-50 dark:bg-gray-900 dark:border-gray-800">
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-background border-t border-border py-4 z-50">
           <nav className="container mx-auto px-6 flex flex-col gap-4">
             {navigation.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="hover:text-gray-300 transition-colors py-2"
+                className="hover:text-foreground/70 transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t(`nav.${item.name.toLowerCase()}`)}
@@ -119,7 +119,7 @@ export default function Header() {
             {!user && (
               <Link
                 href="/sign-in"
-                className="hover:text-gray-300 transition-colors py-2"
+                className="hover:text-foreground/70 transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {authT('header.signInRegister')}

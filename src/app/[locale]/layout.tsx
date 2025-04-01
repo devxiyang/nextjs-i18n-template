@@ -19,8 +19,8 @@ const sourceCodePro = Source_Code_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js i18n Template",
-  description: "A Next.js template with i18n support",
+  title: siteConfig.name,
+  description: siteConfig.description,
 };
 
 // Get dynamic params for internationalization
