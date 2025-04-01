@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { Inter, Source_Code_Pro } from "next/font/google";
 import { notFound } from 'next/navigation';
 import "./globals.css";
+import { siteConfig } from '@/config/site.config';
 
 // Load fonts
 const inter = Inter({
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 
 // Get dynamic params for internationalization
 export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'zh' }, { locale: 'fr' }, { locale: 'de' }, { locale: 'es' }, { locale: 'ja' }];
+  return siteConfig.locales.map(locale => ({ locale }));
 }
 
 /**
