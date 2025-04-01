@@ -1,23 +1,82 @@
 {
   "common": {
     "language": "语言",
-    "siteTitle": "{siteName} - 国际化模板",
+    "languageSwitcher": "语言选择器",
+    "siteTitle": "Next.js 国际化模板",
     "toggleTheme": "切换主题",
     "nav": {
       "home": "首页",
-      "about": "关于"
+      "profile": "个人资料"
+    },
+    "header": {
+      "closeMenu": "关闭菜单",
+      "openMenu": "打开菜单"
     }
   },
-  "about": {
-    "title": "关于我们"
+  "auth": {
+    "header": {
+      "signIn": "登录",
+      "signInRegister": "登录/注册"
+    },
+    "signIn": {
+      "title": "欢迎回来",
+      "description": "请选择以下登录方式",
+      "redirectMessage": "登录后您将被重定向到您的上一页",
+      "quickSignIn": "快速登录",
+      "recommended": "推荐",
+      "emailSignIn": "邮箱登录",
+      "dividerText": "或使用邮箱",
+      "footer": {
+        "termsText": "登录即表示您同意我们的",
+        "termsLink": "服务条款",
+        "andText": "和",
+        "privacyLink": "隐私政策",
+        "debugLink": "查看认证状态"
+      }
+    },
+    "buttons": {
+      "googleSignIn": "使用Google登录",
+      "connecting": "连接中...",
+      "sendLoginLink": "发送登录链接",
+      "sending": "发送中...",
+      "useAnotherEmail": "使用其他邮箱",
+      "signOut": "退出登录"
+    },
+    "email": {
+      "placeholder": "输入您的邮箱地址",
+      "invalidEmail": "请输入有效的邮箱地址",
+      "linkSent": "登录链接已发送",
+      "checkEmail": "请检查您的邮箱并点击登录链接"
+    },
+    "userNav": {
+      "profile": "个人资料",
+      "debug": "调试信息",
+      "signingOut": "退出登录中..."
+    },
+    "error": {
+      "title": "认证错误",
+      "description": "登录过程中发生错误",
+      "backToHome": "返回首页",
+      "retryLogin": "重试登录",
+      "possibleReasons": "可能的原因",
+      "reasons": {
+        "expiredCode": "认证码已过期或无效",
+        "configError": "Google OAuth配置错误",
+        "serverIssue": "服务器连接问题"
+      }
+    },
+    "profile": {
+      "title": "个人资料",
+      "description": "您的账户信息",
+      "defaultUsername": "用户",
+      "accountId": "账户ID",
+      "lastLogin": "最后登录时间"
+    }
   },
   "home": {
-    "getStarted": "开始编辑",
-    "saveChanges": "保存并立即查看您的更改。",
-    "deployNow": "立即部署",
-    "readDocs": "阅读文档",
-    "learn": "学习",
-    "examples": "示例",
-    "goToNextjs": "前往 nextjs.org →"
+    "hero": {
+      "title": "Next.js 国际化模板",
+      "subtitle": "一个具有完整国际化(i18n)和认证功能的清晰模板"
+    }
   }
 }

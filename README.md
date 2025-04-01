@@ -1,138 +1,277 @@
-# Next.js i18n Template
+# Next.js Internationalization (i18n) Template
 
-A modern, internationalized Next.js template with dark mode support, built with TypeScript, Tailwind CSS, and shadcn/ui components.
+这是一个基于Next.js 15的模板项目，提供完整的国际化(i18n)和身份验证(Auth)功能。
 
-![Next.js](https://img.shields.io/badge/Next.js-15.2.3-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38b2ac)
-![next-intl](https://img.shields.io/badge/next--intl-4.0-orange)
+## 特性
 
-## Features
+- 完整的国际化支持，使用`next-intl`
+- 内置身份验证系统，使用Supabase Auth
+- Google OAuth登录集成
+- 暗色模式支持
+- TypeScript支持
+- Tailwind CSS样式
+- Zustand状态管理
 
-- 📝 **TypeScript** - Type-safe code development
-- 🌐 **Internationalization** - Multilingual support with next-intl
-- 🎨 **Theming** - Light/dark mode with next-themes
-- 📱 **Responsive Design** - Mobile-first layout approach
-- 🧩 **Component Library** - Built with shadcn/ui components
-- 🎯 **Cursor Rules** - Custom AI assistance directives for development
-- ⚡ **Fast Development** - Powered by Next.js App Router and TurboRepo
+## 入门指南
 
-## Supported Languages
+### 先决条件
 
-- 🇺🇸 English
-- 🇨🇳 Chinese (Simplified)
-- 🇯🇵 Japanese
-- 🇫🇷 French
-- 🇩🇪 German
-- 🇪🇸 Spanish
+- Node.js 18.17或更高版本
+- 一个Supabase项目（用于身份验证）
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18.17 or later
-- npm, yarn, or pnpm
-
-### Installation
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/nextjs-i18n-template.git
-   cd nextjs-i18n-template
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-3. Run the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the template in action.
-
-## Project Structure
-
-```
-nextjs-i18n-template/
-├── .cursor/                  # Cursor.sh rules for AI assistance
-├── messages/                 # Translation files
-│   ├── en.json              # English translations
-│   ├── zh.json              # Chinese translations
-│   ├── ja.json              # Japanese translations
-│   └── ...                  # Other language files
-├── public/                   # Static files
-├── src/
-│   ├── app/                 # Next.js App Router
-│   │   └── [locale]/        # Locale-based routing
-│   ├── components/          # React components
-│   │   ├── ui/              # shadcn/ui components
-│   │   ├── Header.tsx       # Site header with language switcher
-│   │   ├── LocaleSwitcher.tsx # Language selection component
-│   │   └── ThemeSwitcher.tsx # Theme toggle component
-│   ├── config/              # Application configuration
-│   └── i18n/                # i18n configuration
-└── tailwind.config.ts       # Tailwind CSS configuration
-```
-
-## Customization
-
-### Adding New Languages
-
-1. Create a new JSON file in the `messages` directory, e.g., `it.json` for Italian
-2. Update the supported locales in `src/config/site.config.ts`
-3. Add the locale to `generateStaticParams` in `src/app/[locale]/layout.tsx`
-
-### Adding Components
-
-The project follows a specific convention for UI components:
-
-- `src/components/ui/` is exclusively for shadcn/ui components
-- Custom components should be placed in the `src/components/` directory
-
-To add a new shadcn/ui component:
+### 安装
 
 ```bash
-npx shadcn-ui@latest add [component-name]
+# 克隆仓库
+git clone https://github.com/yourusername/nextjs-i18n-template.git
+cd nextjs-i18n-template
+
+# 安装依赖
+npm install
 ```
 
-### Styling
+### 环境变量
 
-This project uses Tailwind CSS for styling. The theme configuration is in `tailwind.config.ts`.
+创建一个`.env.local`文件，添加以下内容：
 
-## Development Guidelines
+```
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 
-- Follow the [Next.js best practices](https://nextjs.org/docs/advanced-features/best-practices)
-- Use TypeScript for type safety
-- Use the internationalization API for all user-facing text
-- Test changes in both light and dark mode
-- Test responsive design on various screen sizes
+# Site URL (用于OAuth重定向)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-## Deployment
+### 运行开发服务器
 
-This template can be easily deployed to [Vercel](https://vercel.com):
+```bash
+npm run dev
+```
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyourusername%2Fnextjs-i18n-template)
+访问[http://localhost:3000](http://localhost:3000)查看项目。
 
-## License
+## 项目结构
 
-MIT License
+- `src/app/[locale]` - 所有的页面和路由
+- `src/components` - UI组件
+- `src/i18n` - 国际化配置
+- `src/utils/supabase` - Supabase客户端配置
+- `messages/` - i18n翻译文件
+- `src/middleware.ts` - 处理i18n和auth的中间件
+- `src/store/` - Zustand状态管理
 
-## Acknowledgements
+## 国际化支持
 
-- [Next.js](https://nextjs.org/)
-- [next-intl](https://next-intl-docs.vercel.app/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [TypeScript](https://www.typescriptlang.org/)
+该模板支持以下语言：
+
+- English (en) - 默认
+- 中文 (zh)
+- 日本語 (ja)
+- Français (fr)
+- Deutsch (de)
+- Español (es)
+
+若要添加更多语言，请添加相应的翻译文件到`messages/`目录，并在`src/config/site.config.ts`中更新`locales`数组。
+
+## 身份验证
+
+本模板使用Supabase Auth进行身份验证。支持以下功能：
+
+- Google OAuth登录
+- 通过电子邮件链接登录（无密码）
+- 用户配置文件页面
+- 受保护的路由
+
+## Zustand状态管理
+
+本模板包含Zustand状态管理库，用于客户端状态管理。以下是Zustand的基本用法和如何与服务器数据集成。
+
+### 基本用法
+
+Zustand是一个轻量级状态管理库，非常适合Next.js应用。下面是基本用法：
+
+```typescript
+// 创建store
+import { create } from 'zustand';
+
+interface BearState {
+  bears: number
+  increasePopulation: () => void
+}
+
+const useBearStore = create<BearState>((set) => ({
+  bears: 0,
+  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
+}))
+
+// 在组件中使用
+function BearCounter() {
+  const bears = useBearStore((state) => state.bears)
+  return <h1>{bears} bears around here ...</h1>
+}
+
+function Controls() {
+  const increasePopulation = useBearStore((state) => state.increasePopulation)
+  return <button onClick={increasePopulation}>增加熊的数量</button>
+}
+```
+
+### 服务器数据水合流程
+
+在Next.js应用中，特别是使用App Router的应用，数据通常由服务器获取。Zustand可以与服务器数据无缝集成，以下是水合流程：
+
+1. **创建带有hydrate方法的store**
+
+```typescript
+// src/store/dataStore.ts
+import { create } from 'zustand';
+
+interface DataState {
+  items: any[];
+  hydrate: (data: any[]) => void;
+}
+
+const useDataStore = create<DataState>((set) => ({
+  items: [],
+  hydrate: (data) => set({ items: data })
+}));
+
+// 导出直接的hydrate函数
+export const hydrateDataStore = (data: any[]) => {
+  useDataStore.getState().hydrate(data);
+};
+
+export default useDataStore;
+```
+
+2. **创建StoreHydration组件**
+
+```typescript
+// src/components/StoreHydration.tsx
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { hydrateDataStore } from '@/store/dataStore';
+
+interface StoreHydrationProps {
+  serverData: any[];
+}
+
+export default function StoreHydration({ serverData }: StoreHydrationProps) {
+  const hydrated = useRef(false);
+
+  useEffect(() => {
+    if (!hydrated.current) {
+      // 只在初次渲染时执行一次hydrate操作
+      hydrateDataStore(serverData);
+      hydrated.current = true;
+    }
+  }, [serverData]);
+
+  // 组件不渲染任何内容
+  return null;
+}
+```
+
+3. **在布局或页面组件中集成**
+
+```typescript
+// src/app/[locale]/layout.tsx 或页面组件
+import StoreHydration from '@/components/StoreHydration';
+
+export default async function Layout({ children }) {
+  // 在服务器端获取数据
+  const serverData = await fetchDataFromServer();
+  
+  return (
+    <html>
+      <body>
+        {/* 水合Zustand状态 */}
+        <StoreHydration serverData={serverData} />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+4. **在客户端组件中使用**
+
+```typescript
+'use client';
+
+import useDataStore from '@/store/dataStore';
+
+export default function DataList() {
+  // 获取水合后的数据
+  const items = useDataStore((state) => state.items);
+  
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### 避免常见问题
+
+在使用Zustand与Next.js服务器组件集成时，有一些常见问题需要避免：
+
+1. **防止无限循环**
+
+使用`useRef`确保水合操作只执行一次：
+
+```typescript
+const hydrated = useRef(false);
+
+useEffect(() => {
+  if (!hydrated.current) {
+    hydrateStore(data);
+    hydrated.current = true;
+  }
+}, [data]);
+```
+
+2. **使用稳定选择器**
+
+避免在每次渲染时创建新的选择器函数：
+
+```typescript
+// 不好的做法
+const data = useStore(state => ({ value: state.value }));
+
+// 好的做法
+const selectValue = state => state.value;
+const data = useStore(selectValue);
+```
+
+3. **缓存派生状态**
+
+使用`useMemo`缓存计算结果：
+
+```typescript
+const processedData = useMemo(() => {
+  return data.map(item => processItem(item));
+}, [data]);
+```
+
+## 自定义
+
+### 添加新语言
+
+1. 在`messages/`目录中创建新的翻译文件，例如`it.json`
+2. 在`src/config/site.config.ts`中更新`locales`数组
+3. 添加翻译内容
+
+### 修改身份验证提供商
+
+1. 在Supabase仪表板中启用所需的身份验证提供商
+2. 在`src/components/auth/auth-providers.tsx`中添加相应的登录按钮
+
+## 许可证
+
+MIT

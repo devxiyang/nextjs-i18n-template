@@ -1,9 +1,9 @@
 export const siteConfig = {
-    name: 'Resume Maker',
-    description: 'Resume Maker is a tool that helps you create a resume',
+    name: 'Next.js I18n Template',
+    description: 'Next.js template with internationalization and authentication',
     locales: ['en', 'zh', 'ja', 'fr', 'de', 'es'],
     defaultLocale: 'en',
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL || '',
+    baseUrl: process.env.NEXT_PUBLIC_SITE_URL || '',
 }
 
 export const navigation = [
@@ -12,7 +12,7 @@ export const navigation = [
         href: '/',
     },
     {
-        name: 'About',
-        href: '/about',
-    },
+        name: 'Profile',
+        href: '/protected/profile',
+    }
 ]

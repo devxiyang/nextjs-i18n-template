@@ -1,23 +1,82 @@
 {
   "common": {
     "language": "Langue",
-    "siteTitle": "{siteName} - Modèle i18n",
+    "languageSwitcher": "Sélecteur de langue",
+    "siteTitle": "Modèle d'internationalisation Next.js",
     "toggleTheme": "Changer de thème",
     "nav": {
       "home": "Accueil",
-      "about": "À propos"
+      "profile": "Profil"
+    },
+    "header": {
+      "closeMenu": "Fermer le menu",
+      "openMenu": "Ouvrir le menu"
     }
   },
-  "about": {
-    "title": "À propos de nous"
+  "auth": {
+    "header": {
+      "signIn": "Connexion",
+      "signInRegister": "Connexion / Inscription"
+    },
+    "signIn": {
+      "title": "Bienvenue",
+      "description": "Veuillez sélectionner une méthode de connexion ci-dessous",
+      "redirectMessage": "Vous serez redirigé vers votre page précédente après la connexion",
+      "quickSignIn": "Connexion rapide",
+      "recommended": "Recommandé",
+      "emailSignIn": "Connexion par email",
+      "dividerText": "ou utiliser l'email",
+      "footer": {
+        "termsText": "En vous connectant, vous acceptez nos",
+        "termsLink": "Conditions d'utilisation",
+        "andText": "et",
+        "privacyLink": "Politique de confidentialité",
+        "debugLink": "Voir l'état d'authentification"
+      }
+    },
+    "buttons": {
+      "googleSignIn": "Se connecter avec Google",
+      "connecting": "Connexion en cours...",
+      "sendLoginLink": "Envoyer le lien de connexion",
+      "sending": "Envoi en cours...",
+      "useAnotherEmail": "Utiliser un autre email",
+      "signOut": "Déconnexion"
+    },
+    "email": {
+      "placeholder": "Entrez votre adresse email",
+      "invalidEmail": "Veuillez entrer une adresse email valide",
+      "linkSent": "Lien de connexion envoyé",
+      "checkEmail": "Veuillez vérifier votre email et cliquer sur le lien de connexion"
+    },
+    "userNav": {
+      "profile": "Profil",
+      "debug": "Informations de débogage",
+      "signingOut": "Déconnexion en cours..."
+    },
+    "error": {
+      "title": "Erreur d'authentification",
+      "description": "Une erreur s'est produite lors du processus de connexion",
+      "backToHome": "Retour à l'accueil",
+      "retryLogin": "Réessayer la connexion",
+      "possibleReasons": "Raisons possibles",
+      "reasons": {
+        "expiredCode": "Code d'authentification expiré ou invalide",
+        "configError": "Erreur de configuration Google OAuth",
+        "serverIssue": "Problème de connexion au serveur"
+      }
+    },
+    "profile": {
+      "title": "Profil",
+      "description": "Vos informations de compte",
+      "defaultUsername": "Utilisateur",
+      "accountId": "ID du compte",
+      "lastLogin": "Dernière connexion"
+    }
   },
   "home": {
-    "getStarted": "Commencez par éditer",
-    "saveChanges": "Enregistrez et voyez vos changements instantanément.",
-    "deployNow": "Déployer maintenant",
-    "readDocs": "Lire notre documentation",
-    "learn": "Apprendre",
-    "examples": "Exemples",
-    "goToNextjs": "Aller à nextjs.org →"
+    "hero": {
+      "title": "Modèle d'internationalisation Next.js",
+      "subtitle": "Un modèle propre avec des fonctionnalités complètes d'internationalisation (i18n) et d'authentification"
+    }
   }
 } 

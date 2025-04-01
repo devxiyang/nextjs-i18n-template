@@ -1,23 +1,82 @@
 {
   "common": {
     "language": "Idioma",
-    "siteTitle": "{siteName} - Plantilla i18n",
+    "languageSwitcher": "Selector de idioma",
+    "siteTitle": "Plantilla de internacionalización Next.js",
     "toggleTheme": "Cambiar tema",
     "nav": {
       "home": "Inicio",
-      "about": "Sobre nosotros"
+      "profile": "Perfil"
+    },
+    "header": {
+      "closeMenu": "Cerrar menú",
+      "openMenu": "Abrir menú"
     }
   },
-  "about": {
-    "title": "Sobre nosotros"
+  "auth": {
+    "header": {
+      "signIn": "Iniciar sesión",
+      "signInRegister": "Iniciar sesión / Registrarse"
+    },
+    "signIn": {
+      "title": "Bienvenido de nuevo",
+      "description": "Por favor, seleccione un método de inicio de sesión a continuación",
+      "redirectMessage": "Será redirigido a su página anterior después de iniciar sesión",
+      "quickSignIn": "Inicio de sesión rápido",
+      "recommended": "Recomendado",
+      "emailSignIn": "Iniciar sesión con correo electrónico",
+      "dividerText": "o usar correo electrónico",
+      "footer": {
+        "termsText": "Al iniciar sesión, acepta nuestros",
+        "termsLink": "Términos de servicio",
+        "andText": "y",
+        "privacyLink": "Política de privacidad",
+        "debugLink": "Ver estado de autenticación"
+      }
+    },
+    "buttons": {
+      "googleSignIn": "Iniciar sesión con Google",
+      "connecting": "Conectando...",
+      "sendLoginLink": "Enviar enlace de inicio de sesión",
+      "sending": "Enviando...",
+      "useAnotherEmail": "Usar otro correo electrónico",
+      "signOut": "Cerrar sesión"
+    },
+    "email": {
+      "placeholder": "Ingrese su dirección de correo electrónico",
+      "invalidEmail": "Por favor, ingrese una dirección de correo electrónico válida",
+      "linkSent": "Enlace de inicio de sesión enviado",
+      "checkEmail": "Por favor, revise su correo electrónico y haga clic en el enlace de inicio de sesión"
+    },
+    "userNav": {
+      "profile": "Perfil",
+      "debug": "Información de depuración",
+      "signingOut": "Cerrando sesión..."
+    },
+    "error": {
+      "title": "Error de autenticación",
+      "description": "Se produjo un error durante el proceso de inicio de sesión",
+      "backToHome": "Volver al inicio",
+      "retryLogin": "Reintentar inicio de sesión",
+      "possibleReasons": "Posibles razones",
+      "reasons": {
+        "expiredCode": "Código de autenticación caducado o no válido",
+        "configError": "Error de configuración de Google OAuth",
+        "serverIssue": "Problema de conexión con el servidor"
+      }
+    },
+    "profile": {
+      "title": "Perfil",
+      "description": "Su información de cuenta",
+      "defaultUsername": "Usuario",
+      "accountId": "ID de cuenta",
+      "lastLogin": "Último inicio de sesión"
+    }
   },
   "home": {
-    "getStarted": "Comienza editando",
-    "saveChanges": "Guarda y ve tus cambios al instante.",
-    "deployNow": "Desplegar ahora",
-    "readDocs": "Leer nuestra documentación",
-    "learn": "Aprender",
-    "examples": "Ejemplos",
-    "goToNextjs": "Ir a nextjs.org →"
+    "hero": {
+      "title": "Plantilla de internacionalización Next.js",
+      "subtitle": "Una plantilla limpia con funcionalidad completa de internacionalización (i18n) y autenticación"
+    }
   }
 } 

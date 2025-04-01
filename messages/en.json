@@ -1,23 +1,82 @@
 {
   "common": {
     "language": "Language",
-    "siteTitle": "{siteName} - i18n Template",
+    "languageSwitcher": "Language Switcher",
+    "siteTitle": "Next.js i18n Template",
     "toggleTheme": "Toggle theme",
     "nav": {
       "home": "Home",
-      "about": "About"
+      "profile": "Profile"
+    },
+    "header": {
+      "closeMenu": "Close menu",
+      "openMenu": "Open menu"
     }
   },
-  "about": {
-    "title": "About us"
+  "auth": {
+    "header": {
+      "signIn": "Sign in",
+      "signInRegister": "Sign in / Register"
+    },
+    "signIn": {
+      "title": "Welcome Back",
+      "description": "Please select a login method below",
+      "redirectMessage": "You'll be redirected to your previous page after login",
+      "quickSignIn": "Quick Sign In",
+      "recommended": "Recommended",
+      "emailSignIn": "Email Sign In",
+      "dividerText": "or use email",
+      "footer": {
+        "termsText": "By signing in, you agree to our",
+        "termsLink": "Terms of Service",
+        "andText": "and",
+        "privacyLink": "Privacy Policy",
+        "debugLink": "View Auth Status"
+      }
+    },
+    "buttons": {
+      "googleSignIn": "Sign in with Google",
+      "connecting": "Connecting...",
+      "sendLoginLink": "Send Login Link",
+      "sending": "Sending...",
+      "useAnotherEmail": "Use Another Email",
+      "signOut": "Sign out"
+    },
+    "email": {
+      "placeholder": "Enter your email address",
+      "invalidEmail": "Please enter a valid email address",
+      "linkSent": "Login link sent",
+      "checkEmail": "Please check your email and click the login link"
+    },
+    "userNav": {
+      "profile": "Profile",
+      "debug": "Debug Info",
+      "signingOut": "Signing out..."
+    },
+    "error": {
+      "title": "Authentication Error",
+      "description": "An error occurred during the login process",
+      "backToHome": "Back to Home",
+      "retryLogin": "Retry Login",
+      "possibleReasons": "Possible reasons",
+      "reasons": {
+        "expiredCode": "Authentication code expired or invalid",
+        "configError": "Google OAuth configuration error",
+        "serverIssue": "Server connection issue"
+      }
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Your account information",
+      "defaultUsername": "User",
+      "accountId": "Account ID",
+      "lastLogin": "Last Login Time"
+    }
   },
   "home": {
-    "getStarted": "Get started by editing",
-    "saveChanges": "Save and see your changes instantly.",
-    "deployNow": "Deploy now",
-    "readDocs": "Read our docs",
-    "learn": "Learn",
-    "examples": "Examples",
-    "goToNextjs": "Go to nextjs.org →"
+    "hero": {
+      "title": "Next.js Internationalization Template",
+      "subtitle": "A clean template with complete internationalization (i18n) and authentication functionality"
+    }
   }
 }
