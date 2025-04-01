@@ -7,6 +7,10 @@
     "nav": {
       "home": "Startseite",
       "profile": "Profil"
+    },
+    "header": {
+      "closeMenu": "Menü schließen",
+      "openMenu": "Menü öffnen"
     }
   },
   "auth": {
