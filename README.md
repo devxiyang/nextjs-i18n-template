@@ -10,6 +10,7 @@
 - 暗色模式支持
 - TypeScript支持
 - Tailwind CSS样式
+- Zustand状态管理
 
 ## 入门指南
 
@@ -58,6 +59,7 @@ npm run dev
 - `src/utils/supabase` - Supabase客户端配置
 - `messages/` - i18n翻译文件
 - `src/middleware.ts` - 处理i18n和auth的中间件
+- `src/store/` - Zustand状态管理
 
 ## 国际化支持
 
@@ -80,6 +82,182 @@ npm run dev
 - 通过电子邮件链接登录（无密码）
 - 用户配置文件页面
 - 受保护的路由
+
+## Zustand状态管理
+
+本模板包含Zustand状态管理库，用于客户端状态管理。以下是Zustand的基本用法和如何与服务器数据集成。
+
+### 基本用法
+
+Zustand是一个轻量级状态管理库，非常适合Next.js应用。下面是基本用法：
+
+```typescript
+// 创建store
+import { create } from 'zustand';
+
+interface BearState {
+  bears: number
+  increasePopulation: () => void
+}
+
+const useBearStore = create<BearState>((set) => ({
+  bears: 0,
+  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
+}))
+
+// 在组件中使用
+function BearCounter() {
+  const bears = useBearStore((state) => state.bears)
+  return <h1>{bears} bears around here ...</h1>
+}
+
+function Controls() {
+  const increasePopulation = useBearStore((state) => state.increasePopulation)
+  return <button onClick={increasePopulation}>增加熊的数量</button>
+}
+```
+
+### 服务器数据水合流程
+
+在Next.js应用中，特别是使用App Router的应用，数据通常由服务器获取。Zustand可以与服务器数据无缝集成，以下是水合流程：
+
+1. **创建带有hydrate方法的store**
+
+```typescript
+// src/store/dataStore.ts
+import { create } from 'zustand';
+
+interface DataState {
+  items: any[];
+  hydrate: (data: any[]) => void;
+}
+
+const useDataStore = create<DataState>((set) => ({
+  items: [],
+  hydrate: (data) => set({ items: data })
+}));
+
+// 导出直接的hydrate函数
+export const hydrateDataStore = (data: any[]) => {
+  useDataStore.getState().hydrate(data);
+};
+
+export default useDataStore;
+```
+
+2. **创建StoreHydration组件**
+
+```typescript
+// src/components/StoreHydration.tsx
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { hydrateDataStore } from '@/store/dataStore';
+
+interface StoreHydrationProps {
+  serverData: any[];
+}
+
+export default function StoreHydration({ serverData }: StoreHydrationProps) {
+  const hydrated = useRef(false);
+
+  useEffect(() => {
+    if (!hydrated.current) {
+      // 只在初次渲染时执行一次hydrate操作
+      hydrateDataStore(serverData);
+      hydrated.current = true;
+    }
+  }, [serverData]);
+
+  // 组件不渲染任何内容
+  return null;
+}
+```
+
+3. **在布局或页面组件中集成**
+
+```typescript
+// src/app/[locale]/layout.tsx 或页面组件
+import StoreHydration from '@/components/StoreHydration';
+
+export default async function Layout({ children }) {
+  // 在服务器端获取数据
+  const serverData = await fetchDataFromServer();
+  
+  return (
+    <html>
+      <body>
+        {/* 水合Zustand状态 */}
+        <StoreHydration serverData={serverData} />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+4. **在客户端组件中使用**
+
+```typescript
+'use client';
+
+import useDataStore from '@/store/dataStore';
+
+export default function DataList() {
+  // 获取水合后的数据
+  const items = useDataStore((state) => state.items);
+  
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### 避免常见问题
+
+在使用Zustand与Next.js服务器组件集成时，有一些常见问题需要避免：
+
+1. **防止无限循环**
+
+使用`useRef`确保水合操作只执行一次：
+
+```typescript
+const hydrated = useRef(false);
+
+useEffect(() => {
+  if (!hydrated.current) {
+    hydrateStore(data);
+    hydrated.current = true;
+  }
+}, [data]);
+```
+
+2. **使用稳定选择器**
+
+避免在每次渲染时创建新的选择器函数：
+
+```typescript
+// 不好的做法
+const data = useStore(state => ({ value: state.value }));
+
+// 好的做法
+const selectValue = state => state.value;
+const data = useStore(selectValue);
+```
+
+3. **缓存派生状态**
+
+使用`useMemo`缓存计算结果：
+
+```typescript
+const processedData = useMemo(() => {
+  return data.map(item => processItem(item));
+}, [data]);
+```
 
 ## 自定义
 

@@ -2,19 +2,18 @@ import Header from '@/components/Header';
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from "next-themes";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Source_Code_Pro } from "next/font/google";
 import { notFound } from 'next/navigation';
 import "./globals.css";
-import StoreHydration from '@/components/StoreHydration';
 
 // Load fonts
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sourceCodePro = Source_Code_Pro({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -34,7 +33,6 @@ export function generateStaticParams() {
  * This is a Server Component that:
  * 1. Handles i18n setup and language detection
  * 2. Sets up theming and base layout structure
- * 3. Initializes client-side state with StoreHydration
  */
 export default async function RootLayout({
   children,
@@ -58,11 +56,10 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${inter.variable} ${sourceCodePro.variable} antialiased min-h-screen flex flex-col`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <StoreHydration initialLanguage={locale} />
             <Header />
             <main className="flex-grow">
               {children}
