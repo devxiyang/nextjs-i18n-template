@@ -1,23 +1,78 @@
 {
   "common": {
     "language": "Sprache",
-    "siteTitle": "{siteName} - i18n Vorlage",
+    "languageSwitcher": "Sprachumschalter",
+    "siteTitle": "Next.js Internationalisierungsvorlage",
     "toggleTheme": "Thema wechseln",
     "nav": {
       "home": "Startseite",
-      "about": "Über uns"
+      "profile": "Profil"
     }
   },
-  "about": {
-    "title": "Über uns"
+  "auth": {
+    "header": {
+      "signIn": "Anmelden",
+      "signInRegister": "Anmelden / Registrieren"
+    },
+    "signIn": {
+      "title": "Willkommen zurück",
+      "description": "Bitte wählen Sie unten eine Anmeldemethode",
+      "redirectMessage": "Sie werden nach der Anmeldung zu Ihrer vorherigen Seite weitergeleitet",
+      "quickSignIn": "Schnellanmeldung",
+      "recommended": "Empfohlen",
+      "emailSignIn": "E-Mail-Anmeldung",
+      "dividerText": "oder mit E-Mail",
+      "footer": {
+        "termsText": "Mit der Anmeldung stimmen Sie unseren",
+        "termsLink": "Nutzungsbedingungen",
+        "andText": "und",
+        "privacyLink": "Datenschutzrichtlinien",
+        "debugLink": "Authentifizierungsstatus anzeigen"
+      }
+    },
+    "buttons": {
+      "googleSignIn": "Mit Google anmelden",
+      "connecting": "Verbindung wird hergestellt...",
+      "sendLoginLink": "Anmeldelink senden",
+      "sending": "Wird gesendet...",
+      "useAnotherEmail": "Andere E-Mail verwenden",
+      "signOut": "Abmelden"
+    },
+    "email": {
+      "placeholder": "Geben Sie Ihre E-Mail-Adresse ein",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "linkSent": "Anmeldelink gesendet",
+      "checkEmail": "Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Anmeldelink"
+    },
+    "userNav": {
+      "profile": "Profil",
+      "debug": "Debug-Informationen",
+      "signingOut": "Abmeldung läuft..."
+    },
+    "error": {
+      "title": "Authentifizierungsfehler",
+      "description": "Bei der Anmeldung ist ein Fehler aufgetreten",
+      "backToHome": "Zurück zur Startseite",
+      "retryLogin": "Anmeldung wiederholen",
+      "possibleReasons": "Mögliche Gründe",
+      "reasons": {
+        "expiredCode": "Authentifizierungscode abgelaufen oder ungültig",
+        "configError": "Google OAuth-Konfigurationsfehler",
+        "serverIssue": "Serververbindungsproblem"
+      }
+    },
+    "profile": {
+      "title": "Profil",
+      "description": "Ihre Kontoinformationen",
+      "defaultUsername": "Benutzer",
+      "accountId": "Konto-ID",
+      "lastLogin": "Letzte Anmeldezeit"
+    }
   },
   "home": {
-    "getStarted": "Beginnen Sie mit der Bearbeitung",
-    "saveChanges": "Speichern und sehen Sie Ihre Änderungen sofort.",
-    "deployNow": "Jetzt bereitstellen",
-    "readDocs": "Lesen Sie unsere Dokumentation",
-    "learn": "Lernen",
-    "examples": "Beispiele",
-    "goToNextjs": "Gehen Sie zu nextjs.org →"
+    "hero": {
+      "title": "Next.js Internationalisierungsvorlage",
+      "subtitle": "Eine saubere Vorlage mit vollständiger Internationalisierung (i18n) und Authentifizierungsfunktionalität"
+    }
   }
 } 

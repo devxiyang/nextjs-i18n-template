@@ -1,23 +1,78 @@
 {
   "common": {
     "language": "言語",
-    "siteTitle": "{siteName} - 国際化テンプレート",
+    "languageSwitcher": "言語スイッチャー",
+    "siteTitle": "Next.js 国際化テンプレート",
     "toggleTheme": "テーマ切り替え",
     "nav": {
       "home": "ホーム",
-      "about": "について"
+      "profile": "プロフィール"
     }
   },
-  "about": {
-    "title": "私たちについて"
+  "auth": {
+    "header": {
+      "signIn": "サインイン",
+      "signInRegister": "サインイン / 登録"
+    },
+    "signIn": {
+      "title": "おかえりなさい",
+      "description": "以下のログイン方法を選択してください",
+      "redirectMessage": "ログイン後、前のページにリダイレクトされます",
+      "quickSignIn": "クイックサインイン",
+      "recommended": "推奨",
+      "emailSignIn": "メールでサインイン",
+      "dividerText": "またはメールを使用",
+      "footer": {
+        "termsText": "サインインすることで、以下に同意したことになります：",
+        "termsLink": "利用規約",
+        "andText": "および",
+        "privacyLink": "プライバシーポリシー",
+        "debugLink": "認証状態を表示"
+      }
+    },
+    "buttons": {
+      "googleSignIn": "Googleでサインイン",
+      "connecting": "接続中...",
+      "sendLoginLink": "ログインリンクを送信",
+      "sending": "送信中...",
+      "useAnotherEmail": "別のメールを使用",
+      "signOut": "サインアウト"
+    },
+    "email": {
+      "placeholder": "メールアドレスを入力",
+      "invalidEmail": "有効なメールアドレスを入力してください",
+      "linkSent": "ログインリンクを送信しました",
+      "checkEmail": "メールを確認してログインリンクをクリックしてください"
+    },
+    "userNav": {
+      "profile": "プロフィール",
+      "debug": "デバッグ情報",
+      "signingOut": "サインアウト中..."
+    },
+    "error": {
+      "title": "認証エラー",
+      "description": "ログイン処理中にエラーが発生しました",
+      "backToHome": "ホームに戻る",
+      "retryLogin": "ログインを再試行",
+      "possibleReasons": "考えられる原因",
+      "reasons": {
+        "expiredCode": "認証コードの期限切れまたは無効",
+        "configError": "Google OAuth設定エラー",
+        "serverIssue": "サーバー接続の問題"
+      }
+    },
+    "profile": {
+      "title": "プロフィール",
+      "description": "あなたのアカウント情報",
+      "defaultUsername": "ユーザー",
+      "accountId": "アカウントID",
+      "lastLogin": "最終ログイン時間"
+    }
   },
   "home": {
-    "getStarted": "編集を開始する",
-    "saveChanges": "保存して変更をすぐに確認できます。",
-    "deployNow": "今すぐデプロイ",
-    "readDocs": "ドキュメントを読む",
-    "learn": "学ぶ",
-    "examples": "例",
-    "goToNextjs": "nextjs.orgに移動 →"
+    "hero": {
+      "title": "Next.js 国際化テンプレート",
+      "subtitle": "完全な国際化（i18n）と認証機能を備えたクリーンなテンプレート"
+    }
   }
 } 

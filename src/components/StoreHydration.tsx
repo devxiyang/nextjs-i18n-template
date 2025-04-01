@@ -1,8 +1,12 @@
 'use client';  // Mark as client component, as we use hooks and browser APIs
 
 import { useEffect, useRef } from 'react';
-import { hydrateSEOLocationsStore } from '@/store/seodata.init';
-import { LocationAndLanguage } from '@/lib/types.thirdapi';
+import { hydrateUserStore } from '@/store/userStore';
+
+interface StoreHydrationProps {
+  initialTheme?: 'light' | 'dark' | 'system';
+  initialLanguage?: string;
+}
 
 /**
  * StoreHydration Component
@@ -19,28 +23,27 @@ import { LocationAndLanguage } from '@/lib/types.thirdapi';
  * This pattern avoids the need for a Provider while maintaining
  * the benefits of server-side rendering with client-side state.
  */
-export default function StoreHydration({ 
-  seoLocations
-}: { 
-  seoLocations: LocationAndLanguage[] 
-}) {
-  // Using useRef to track if hydration has run
-  const hasEffectRun = useRef(false);
-  
-  // Run only once after initial render
-  useEffect(() => {
-    // Skip if effect has already run
-    if (hasEffectRun.current) {
-      return;
-    }
-    
-    // Mark effect as run
-    hasEffectRun.current = true;
-    
-    // Hydrate the store
-    hydrateSEOLocationsStore(seoLocations);
-  }, []); // Empty dependency array - only run once
+export default function StoreHydration({ initialTheme, initialLanguage }: StoreHydrationProps) {
+  const hydrated = useRef(false);
 
-  // This component doesn't render anything
+  useEffect(() => {
+    if (!hydrated.current) {
+      // 只在初次渲染时执行一次hydrate操作
+      const dataToHydrate = {
+        theme: initialTheme,
+        language: initialLanguage,
+      };
+      
+      // 只传递有效的值
+      const filteredData = Object.fromEntries(
+        Object.entries(dataToHydrate).filter(([_, v]) => v !== undefined)
+      );
+      
+      hydrateUserStore(filteredData);
+      hydrated.current = true;
+    }
+  }, [initialTheme, initialLanguage]);
+
+  // 组件不渲染任何内容
   return null;
 } 

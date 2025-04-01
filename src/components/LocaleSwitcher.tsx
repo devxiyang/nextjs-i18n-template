@@ -1,17 +1,18 @@
 "use client";
 
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
-import { useParams } from "next/navigation";
-import { siteConfig } from "@/config/site.config";
-import { Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { siteConfig } from "@/config/site.config";
+import { Button } from './ui/button';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from './ui/dropdown-menu';
+import { Globe } from "lucide-react";
+import useUserStore from '@/store/userStore';
+import { useEffect } from 'react';
 
 // Language display names mapping
 const languageNames: Record<string, string> = {
@@ -34,38 +35,49 @@ const languageFlags: Record<string, string> = {
 };
 
 export default function LocaleSwitcher() {
+  const t = useTranslations('common');
   const router = useRouter();
   const pathname = usePathname();
-  const params = useParams();
-  const t = useTranslations('common');
-  const currentLocale = params.locale as string;
+  
+  // 使用Zustand状态
+  const currentLanguage = useUserStore(state => state.preferences.language);
+  const setUserLanguage = useUserStore(state => state.setLanguage);
+  
+  // 页面加载时同步当前语言到Zustand
+  useEffect(() => {
+    // 从URL中提取locale并更新Zustand
+    const localeFromPath = window.location.pathname.split('/')[1];
+    if (siteConfig.locales.includes(localeFromPath) && localeFromPath !== currentLanguage) {
+      setUserLanguage(localeFromPath);
+    }
+  }, [currentLanguage, setUserLanguage]);
 
-  // Handle locale change
-  function handleLocaleChange(newLocale: string) {
-    // Preserve the current pathname but change the locale
-    router.push(pathname, { locale: newLocale });
-  }
+  const switchLocale = (locale: string) => {
+    // 更新Zustand状态
+    setUserLanguage(locale);
+    // 切换路由
+    router.push(pathname, { locale });
+  };
 
   return (
-    <Select value={currentLocale} onValueChange={handleLocaleChange}>
-      <SelectTrigger className="w-[160px] bg-gray-800 border-gray-700 text-gray-200 hover:text-white hover:border-gray-600 focus:ring-gray-500 focus:ring-opacity-50">
-        <Globe className="h-4 w-4 mr-2 text-gray-400" />
-        <SelectValue placeholder={t('language')} />
-      </SelectTrigger>
-      <SelectContent className="bg-gray-800 border-gray-700 text-gray-200">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Globe className="h-5 w-5" />
+          <span className="sr-only">{t('language')}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
         {siteConfig.locales.map((locale) => (
-          <SelectItem 
-            key={locale} 
-            value={locale}
-            className={`${currentLocale === locale ? 'bg-gray-700' : ''} hover:bg-gray-700 focus:bg-gray-700 focus:text-white`}
+          <DropdownMenuItem 
+            key={locale}
+            onClick={() => switchLocale(locale)}
+            className={locale === currentLanguage ? "bg-muted" : ""}
           >
-            <span className="flex items-center">
-              <span className="mr-2">{languageFlags[locale]}</span>
-              {languageNames[locale] || locale}
-            </span>
-          </SelectItem>
+            {locale.toUpperCase()}
+          </DropdownMenuItem>
         ))}
-      </SelectContent>
-    </Select>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 } 
