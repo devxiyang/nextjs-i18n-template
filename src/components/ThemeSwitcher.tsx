@@ -14,28 +14,28 @@ export default function ThemeSwitcher() {
   const userStoreTheme = useUserStore(state => state.preferences.theme);
   const setUserStoreTheme = useUserStore(state => state.setTheme);
 
-  // 在渲染时同步theme
+  // Synchronize theme on render
   useEffect(() => {
     setMounted(true);
-    // 如果Zustand存储的主题与当前主题不同，更新当前主题
+    // If the Zustand stored theme differs from the current theme, update the current theme
     if (userStoreTheme && userStoreTheme !== 'system' && userStoreTheme !== theme) {
       setTheme(userStoreTheme);
     }
   }, [userStoreTheme, setTheme]);
 
-  // 切换主题并更新存储
+  // Toggle theme and update the store
   const toggleTheme = () => {
-    // 使用resolvedTheme替代theme可以确保获取到实际应用的主题
+    // Use resolvedTheme instead of theme to ensure we get the actually applied theme
     const currentTheme = resolvedTheme || theme;
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     setUserStoreTheme(newTheme);
   };
 
-  // 避免水合不匹配
+  // Avoid hydration mismatch
   if (!mounted) return null;
 
-  // 使用resolvedTheme确保按钮图标显示正确
+  // Use resolvedTheme to ensure button icon displays correctly
   const currentTheme = resolvedTheme || theme;
 
   return (

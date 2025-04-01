@@ -39,13 +39,13 @@ export default function LocaleSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
   
-  // 使用Zustand状态
+  // Use Zustand state
   const currentLanguage = useUserStore(state => state.preferences.language);
   const setUserLanguage = useUserStore(state => state.setLanguage);
   
-  // 页面加载时同步当前语言到Zustand
+  // Synchronize current language to Zustand on page load
   useEffect(() => {
-    // 从URL中提取locale并更新Zustand
+    // Extract locale from URL and update Zustand
     const localeFromPath = window.location.pathname.split('/')[1];
     if (siteConfig.locales.includes(localeFromPath) && localeFromPath !== currentLanguage) {
       setUserLanguage(localeFromPath);
@@ -53,13 +53,13 @@ export default function LocaleSwitcher() {
   }, [currentLanguage, setUserLanguage]);
 
   const switchLocale = (locale: string) => {
-    // 更新Zustand状态
+    // Update Zustand state
     setUserLanguage(locale);
-    // 切换路由
+    // Switch route
     router.push(pathname, { locale });
   };
 
-  // 获取当前显示的语言国旗
+  // Get current language flag
   const currentFlag = currentLanguage ? languageFlags[currentLanguage] : '🌐';
 
   return (

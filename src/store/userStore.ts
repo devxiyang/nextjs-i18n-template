@@ -13,8 +13,8 @@ interface UserState {
 }
 
 /**
- * 用户状态存储，用于管理用户的主题偏好和语言设置
- * 这是一个纯客户端状态，不需要服务器水合
+ * User state store for managing theme preferences and language settings
+ * This is a client-side only state, doesn't require server hydration
  */
 const useUserStore = create<UserState>((set) => ({
   preferences: {
@@ -27,16 +27,16 @@ const useUserStore = create<UserState>((set) => ({
   setLanguage: (language) => set((state) => ({
     preferences: { ...state.preferences, language }
   })),
-  // 此hydrate方法为示例代码，展示如何实现服务器数据水合
-  // 在实际的应用中，语言和主题通常不需要水合，因为它们是客户端状态
+  // This hydrate method is an example of how to implement server data hydration
+  // In the actual application, language and theme usually don't need hydration as they are client-side state
   hydrate: (data) => set((state) => ({
     preferences: { ...state.preferences, ...data }
   }))
 }));
 
 /**
- * 此函数为示例代码，展示服务器数据水合的实现方式
- * 在当前应用中不需要使用此函数，因为语言和主题是客户端状态
+ * This function is example code showing how to implement server data hydration
+ * In the current application, this function is not needed as language and theme are client-side state
  */
 export const hydrateUserStore = (data: Partial<UserPreferences>) => {
   useUserStore.getState().hydrate(data);
