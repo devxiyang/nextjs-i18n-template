@@ -59,12 +59,16 @@ export default function LocaleSwitcher() {
     router.push(pathname, { locale });
   };
 
+  // 获取当前显示的语言国旗
+  const currentFlag = currentLanguage ? languageFlags[currentLanguage] : '🌐';
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Globe className="h-5 w-5" />
-          <span className="sr-only">{t('language')}</span>
+        <Button variant="ghost" size="sm" className="flex items-center gap-1 px-2">
+          <span className="text-base mr-1">{currentFlag}</span>
+          <span className="hidden sm:inline">{currentLanguage ? languageNames[currentLanguage] : t('language')}</span>
+          <Globe className="h-4 w-4 sm:hidden" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -72,9 +76,10 @@ export default function LocaleSwitcher() {
           <DropdownMenuItem 
             key={locale}
             onClick={() => switchLocale(locale)}
-            className={locale === currentLanguage ? "bg-muted" : ""}
+            className={`flex items-center gap-2 min-w-[140px] ${locale === currentLanguage ? "bg-muted" : ""}`}
           >
-            {locale.toUpperCase()}
+            <span className="text-base">{languageFlags[locale]}</span>
+            <span>{languageNames[locale]}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
