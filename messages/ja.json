@@ -7,6 +7,10 @@
     "nav": {
       "home": "ホーム",
       "profile": "プロフィール"
+    },
+    "header": {
+      "closeMenu": "メニューを閉じる",
+      "openMenu": "メニューを開く"
     }
   },
   "auth": {

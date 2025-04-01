@@ -7,6 +7,10 @@
     "nav": {
       "home": "首页",
       "profile": "个人资料"
+    },
+    "header": {
+      "closeMenu": "关闭菜单",
+      "openMenu": "打开菜单"
     }
   },
   "auth": {

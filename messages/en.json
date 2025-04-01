@@ -7,6 +7,10 @@
     "nav": {
       "home": "Home",
       "profile": "Profile"
+    },
+    "header": {
+      "closeMenu": "Close menu",
+      "openMenu": "Open menu"
     }
   },
   "auth": {
