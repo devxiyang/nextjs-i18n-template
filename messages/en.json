@@ -1,23 +1,181 @@
 {
   "common": {
     "language": "Language",
-    "siteTitle": "{siteName} - i18n Template",
+    "siteTitle": "{siteName} - Next-Gen SEO Tool for Devs",
     "toggleTheme": "Toggle theme",
     "nav": {
       "home": "Home",
-      "about": "About"
+      "about": "About",
+      "pricing": "Pricing",
+      "features": "Features"
+    },
+    "cta": {
+      "getStarted": "Try Beta",
+      "tryFree": "Launch Free",
+      "learnMore": "Discover More",
+      "start": "Get Started"
+    },
+    "header": {
+      "closeMenu": "Close menu",
+      "openMenu": "Open menu"
+    }
+  },
+  "auth": {
+    "header": {
+      "signIn": "Sign in",
+      "signInRegister": "Sign in / Register"
+    },
+    "signIn": {
+      "title": "Welcome Back",
+      "description": "Please select a login method below",
+      "redirectMessage": "You'll be redirected to your previous page after login",
+      "quickSignIn": "Quick Sign In",
+      "recommended": "Recommended",
+      "emailSignIn": "Email Sign In",
+      "dividerText": "or use email",
+      "footer": {
+        "termsText": "By signing in, you agree to our",
+        "termsLink": "Terms of Service",
+        "andText": "and",
+        "privacyLink": "Privacy Policy",
+        "debugLink": "View Auth Status"
+      }
+    },
+    "buttons": {
+      "googleSignIn": "Sign in with Google",
+      "connecting": "Connecting...",
+      "sendLoginLink": "Send Login Link",
+      "sending": "Sending...",
+      "useAnotherEmail": "Use Another Email",
+      "signOut": "Sign out"
+    },
+    "email": {
+      "placeholder": "Enter your email address",
+      "invalidEmail": "Please enter a valid email address",
+      "linkSent": "Login link sent",
+      "checkEmail": "Please check your email and click the login link"
+    },
+    "userNav": {
+      "profile": "Profile",
+      "debug": "Debug Info",
+      "signingOut": "Signing out..."
+    },
+    "error": {
+      "title": "Authentication Error",
+      "description": "An error occurred during the login process",
+      "backToHome": "Back to Home",
+      "retryLogin": "Retry Login",
+      "possibleReasons": "Possible reasons",
+      "reasons": {
+        "expiredCode": "Authentication code expired or invalid",
+        "configError": "Google OAuth configuration error",
+        "serverIssue": "Server connection issue"
+      }
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Your account information",
+      "defaultUsername": "User",
+      "accountId": "Account ID",
+      "lastLogin": "Last Login Time"
     }
   },
   "about": {
-    "title": "About us"
+    "title": "Our Story",
+    "mission": {
+      "title": "Built By Devs, For Devs",
+      "content": "We're indie developers who were frustrated with bloated, overpriced SEO tools. So we engineered something better: a lean, powerful keyword research tool that respects your time and budget."
+    },
+    "team": {
+      "title": "Current Status",
+      "content": "Now in beta, laser-focused on serving indie developers and bootstrapped startups. We're constantly iterating based on real developer feedback."
+    },
+    "values": {
+      "title": "Core Principles",
+      "items": {
+        "quality": {
+          "title": "Ruthless Simplicity",
+          "description": "Zero bloat. Zero distractions. Just powerful keyword insights."
+        },
+        "innovation": {
+          "title": "True Usage Pricing",
+          "description": "Flexible pricing that scales precisely with your needs"
+        },
+        "userFocus": {
+          "title": "Dev-Centric",
+          "description": "Engineered specifically for technical products and audiences"
+        }
+      }
+    }
   },
   "home": {
-    "getStarted": "Get started by editing",
-    "saveChanges": "Save and see your changes instantly.",
-    "deployNow": "Deploy now",
-    "readDocs": "Read our docs",
-    "learn": "Learn",
-    "examples": "Examples",
-    "goToNextjs": "Go to nextjs.org →"
+    "hero": {
+      "beta": "Beta Version",
+      "title": "SEO Tools for Independent Developers",
+      "subtitle": "Discover niche market opportunities, optimize content ranking, and boost website traffic. Pay-as-you-go pricing with full transparency."
+    },
+    "features": {
+      "title": "Core Features",
+      "subtitle": "Designed specifically for independent developers to find the best market opportunities",
+      "items": {
+        "keyword": {
+          "icon": "🔍",
+          "title": "Keyword Analysis",
+          "description": "Smart analysis of keyword difficulty and search volume to help you find the perfect niche market"
+        },
+        "competition": {
+          "icon": "🎯",
+          "title": "Competition Analysis",
+          "description": "Analyze competitor rankings and content strategies to identify market opportunities"
+        },
+        "content": {
+          "icon": "📝",
+          "title": "Content Optimization",
+          "description": "Data-driven recommendations to optimize your website content and improve search rankings"
+        }
+      }
+    },
+    "pricing": {
+      "title": "Simple & Transparent Pricing",
+      "subtitle": "Pay per result item, no hidden fees",
+      "price": "$0.02/result item",
+      "features": [
+        "Pay per result item",
+        "No minimum charge",
+        "No subscription fees",
+        "Start and stop anytime"
+      ]
+    },
+    "cta": {
+      "title": "Start Using DevSEO",
+      "subtitle": "Pay-as-you-go pricing, full transparency, start and stop anytime",
+      "start": "Get Started",
+      "learnMore": "Learn More"
+    }
+  },
+  "pricing": {
+    "title": "Pure Usage Pricing",
+    "subtitle": "Free during beta, pay-per-search afterward",
+    "plans": {
+      "free": {
+        "name": "Beta Access",
+        "price": "Free",
+        "period": "during beta",
+        "features": [
+          "Pay-per-search model",
+          "Developer-optimized metrics",
+          "JSON/CSV data export",
+          "No recurring subscriptions"
+        ]
+      }
+    }
+  },
+  "keywords": {
+    "loading": "Loading keywords search...",
+    "tabs": {
+      "related": "Related Keywords",
+      "suggestions": "Keyword Suggestions",
+      "ideas": "Keyword Ideas"
+    }
   }
 }

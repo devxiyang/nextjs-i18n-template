@@ -1,6 +1,6 @@
 export const siteConfig = {
-    name: 'Resume Maker',
-    description: 'Resume Maker is a tool that helps you create a resume',
+    name: 'DevSEO.Click',
+    description: 'Developer-focused SEO keyword research tool with usage-based pricing',
     locales: ['en', 'zh', 'ja', 'fr', 'de', 'es'],
     defaultLocale: 'en',
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL || '',
@@ -12,7 +12,11 @@ export const navigation = [
         href: '/',
     },
     {
+        name: 'Pricing',
+        href: '/pricing',
+    },
+    {
         name: 'About',
         href: '/about',
-    },
+    }
 ]

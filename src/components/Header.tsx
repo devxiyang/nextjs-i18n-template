@@ -1,20 +1,52 @@
 "use client";
 
-import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
-import { navigation } from '@/config/site.config';
-import { useParams } from 'next/navigation';
-import { siteConfig } from '@/config/site.config';
-import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
+import { UserAccountNav } from '@/components/auth/user-account-nav';
+import { navigation, siteConfig } from '@/config/site.config';
+import { Menu, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { useState, useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client';
+import { User } from '@supabase/supabase-js';
+import { Button } from './ui/button';
 
 export default function Header() {
   const t = useTranslations('common');
-  const params = useParams();
-  const currentLocale = params.locale as string;
+  const authT = useTranslations('auth');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setIsLoading(true);
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUser();
+
+    // 设置 Supabase 认证状态变化监听器
+    const supabase = createClient();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -48,11 +80,20 @@ export default function Header() {
           
           <ThemeSwitcher />
           
+          {/* 用户菜单 */}
+          {isLoading ? null : user ? (
+            <UserAccountNav user={user} />
+          ) : (
+            <Button asChild variant="ghost" size="sm" className="text-white hover:text-gray-300">
+              <Link href="/sign-in">{authT('header.signIn')}</Link>
+            </Button>
+          )}
+          
           {/* Mobile Menu Button */}
           <button 
             className="md:hidden p-2 text-gray-400 hover:text-white focus:outline-none" 
             onClick={toggleMenu}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -73,6 +114,17 @@ export default function Header() {
                 {t(`nav.${item.name.toLowerCase()}`)}
               </Link>
             ))}
+            
+            {/* 移动端添加登录/注册链接 */}
+            {!user && (
+              <Link
+                href="/sign-in"
+                className="hover:text-gray-300 transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {authT('header.signInRegister')}
+              </Link>
+            )}
           </nav>
         </div>
       )}
