@@ -12,7 +12,7 @@ import {
 import { useAuthAction } from "@/hooks/use-auth-action"
 import { signOut } from "@/server/auth.actions"
 import { User } from "@supabase/supabase-js"
-import { Loader2 } from "lucide-react"
+import { Loader2, LogIn } from "lucide-react"
 import Link from "next/link"
 import { useMemo, useEffect, useRef, useState } from "react"
 import { useTranslations } from "next-intl"
@@ -95,8 +95,20 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
     );
   };
 
-  // If not authenticated in store or signing out, show loading spinner
-  if (!authStore.isAuthenticated || isSigningOut) {
+  // If already signed out completely, show sign-in button
+  if (!authStore.isAuthenticated) {
+    return (
+      <Button asChild variant="ghost" size="sm" className="hover:text-foreground/70">
+        <Link href="/sign-in" className="flex items-center gap-1">
+          <LogIn className="h-4 w-4 mr-1" />
+          {t('header.signIn')}
+        </Link>
+      </Button>
+    );
+  }
+  
+  // If in the process of signing out, show spinner
+  if (isSigningOut) {
     return (
       <Button variant="ghost" className="relative h-8 w-8 rounded-full" disabled>
         <Loader2 className="h-5 w-5 animate-spin" />
