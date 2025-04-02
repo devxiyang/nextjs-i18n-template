@@ -3,14 +3,14 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-// Google 登录
+// Google sign in
 export async function signInWithGoogle(redirectTo?: string) {
   const supabase = await createClient();
   
-  // 构建回调 URL（带有可选的重定向参数）
+  // Build callback URL (with optional redirect parameter)
   const callbackUrl = new URL('/api/auth/callback', process.env.NEXT_PUBLIC_SITE_URL!);
   
-  // 如果提供了重定向目标，将其添加到回调 URL
+  // If a redirect target is provided, add it to the callback URL
   if (redirectTo) {
     callbackUrl.searchParams.set('next', redirectTo);
   }
@@ -33,11 +33,11 @@ export async function signInWithGoogle(redirectTo?: string) {
   return { redirectUrl: data.url, success: true };
 }
 
-// 邮箱登录 - 发送登录链接
+// Email login - send magic link
 export async function signInWithEmail(email: string) {
   const supabase = await createClient();
   
-  // 构建回调 URL
+  // Build callback URL
   const callbackUrl = new URL('/api/auth/callback', process.env.NEXT_PUBLIC_SITE_URL!);
   
   const { error } = await supabase.auth.signInWithOtp({
@@ -53,11 +53,11 @@ export async function signInWithEmail(email: string) {
 
   return { 
     success: true, 
-    message: "登录链接已发送到您的邮箱，请查收并点击链接完成登录" 
+    message: "Login link has been sent to your email. Please check your inbox and click the link to complete login." 
   };
 }
 
-// 登出功能
+// Sign out function
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
