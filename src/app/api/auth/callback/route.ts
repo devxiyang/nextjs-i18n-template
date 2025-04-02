@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   // 使用搜索参数中的 next 值，如果没有则使用默认值
   const next = searchParams.get('next') || AUTH_PATHS.REDIRECT.AFTER_SIGN_IN
   
-  // 错误重定向地址 - 这里也可以使用配置，但目前保持简单
+  // 错误重定向地址
   const errorUrl = `${origin}/auth/auth-code-error` 
 
   if (!code) {
@@ -26,26 +26,10 @@ export async function GET(request: Request) {
       console.error('Error exchanging code for session:', error.message)
       return NextResponse.redirect(errorUrl)
     }
-
-    // 处理重定向
-    const forwardedHost = request.headers.get('x-forwarded-host')
-    const forwardedProto = request.headers.get('x-forwarded-proto')
-    const isLocalEnv = process.env.NODE_ENV === 'development'
     
-    let baseUrl: string;
-    
-    if (isLocalEnv) {
-      baseUrl = origin;
-    } else if (forwardedHost) {
-      const protocol = forwardedProto || 'https';
-      baseUrl = `${protocol}://${forwardedHost}`;
-    } else {
-      baseUrl = origin;
-    }
-    
-    // 构建有效的重定向URL
-    const redirectPath = next.startsWith('/') ? next : `/${next}`;
-    return NextResponse.redirect(`${baseUrl}${redirectPath}`);
+    // 直接使用当前请求的origin作为基础URL
+    const redirectPath = next.startsWith('/') ? next : `/${next}`
+    return NextResponse.redirect(`${origin}${redirectPath}`)
     
   } catch (err) {
     console.error('Unexpected error in auth callback:', err)

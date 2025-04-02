@@ -5,15 +5,15 @@ import { revalidatePath } from "next/cache";
 import { Provider } from "@supabase/supabase-js";
 import { AUTH_PATHS } from "@/config/auth.paths";
 
-// 共享配置 - 使用约定而非复杂配置
+// 统一的认证配置
 const getAuthConfig = () => {
+  // 获取站点URL - 这应该是一个完整的URL，包括协议
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   
   if (!siteUrl) {
     throw new Error("NEXT_PUBLIC_SITE_URL is not defined in environment variables");
   }
   
-  // 使用配置文件中的路径
   return {
     redirectTo: `${siteUrl}${AUTH_PATHS.API.CALLBACK}`,
     scopes: 'email profile',
@@ -70,15 +70,6 @@ export async function signInWithSocialProvider(provider: Provider, next?: string
 export async function signInWithGoogle(next?: string) {
   return signInWithSocialProvider('google', next);
 }
-
-// 可以轻松添加其他提供商
-// export async function signInWithGithub() {
-//   return signInWithSocialProvider('github');
-// }
-
-// export async function signInWithFacebook() {
-//   return signInWithSocialProvider('facebook');
-// }
 
 // 邮箱登录 - 发送登录链接
 export async function signInWithEmail(email: string) {
