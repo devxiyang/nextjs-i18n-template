@@ -1,7 +1,7 @@
 import createIntlMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 import { NextRequest, NextResponse } from 'next/server';
-import { updateSession } from "@/utils/supabase/middleware";
+import { updateSession } from '@/lib/supabase/middleware';
 
 // 创建一个处理国际化的中间件
 const intlMiddleware = createIntlMiddleware(routing);

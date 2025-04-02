@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { AuthCard } from "@/components/auth/auth-card";
 import { SignOutButton } from "@/components/auth/auth-providers";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

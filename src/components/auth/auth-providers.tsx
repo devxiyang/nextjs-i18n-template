@@ -3,47 +3,38 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAuthAction } from "@/hooks/use-auth-action";
-import { signInWithEmail, signInWithGoogle, signOut } from "@/server/auth.actions";
+import { signInWithEmail, signInWithGoogle } from "@/services/auth.actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2, LogOut, Mail } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 import { useSearchParams } from 'next/navigation';
+import useAuth from "@/hooks/useAuth";
 
 type AuthProviderProps = {
   isLoading?: boolean;
 };
 
 // Google 图标组件
-const GoogleIcon = () => (
-  <svg className="w-5 h-5" viewBox="0 0 24 24">
-    <path
-      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-      fill="#4285F4"
-    />
-    <path
-      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-      fill="#34A853"
-    />
-    <path
-      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-      fill="#FBBC05"
-    />
-    <path
-      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-      fill="#EA4335"
-    />
-  </svg>
-);
+function GoogleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" className="mr-1">
+      <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+        <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z" />
+        <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z" />
+        <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z" />
+        <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z" />
+      </g>
+    </svg>
+  );
+}
 
 // Google 登录按钮组件
 export function GoogleSignInButton({ isLoading: externalLoading = false }: AuthProviderProps) {
-  const { isPending, executeAction } = useAuthAction();
-  const isLoading = isPending || externalLoading;
+  const auth = useAuth();
+  const isLoading = auth.isPending || externalLoading;
   const t = useTranslations('auth');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const searchParams = useSearchParams();
@@ -52,7 +43,7 @@ export function GoogleSignInButton({ isLoading: externalLoading = false }: AuthP
   const handleSignIn = async () => {
     setIsSubmitting(true);
 
-    executeAction(
+    auth.executeAction(
       // 认证操作
       async () => await signInWithGoogle(nextUrl),
       // 成功回调
@@ -98,111 +89,85 @@ export function GoogleSignInButton({ isLoading: externalLoading = false }: AuthP
 }
 
 // 登出按钮组件
-type SignOutButtonProps = {
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
-  size?: "default" | "sm" | "lg" | "icon";
-  className?: string;
-  children?: React.ReactNode;
-};
-
-export function SignOutButton({
-  variant = "outline",
-  size = "default",
-  className = "",
-  children
-}: SignOutButtonProps) {
-  const { isPending, executeAction } = useAuthAction();
-  const t = useTranslations('auth.buttons');
-
-  const handleSignOut = async () => {
-    executeAction(
-      async () => await signOut(),
-      () => {
-        // 使用配置的重定向路径
-        window.location.href = "/";
-      }
-    );
-  };
+export function SignOutButton({ isLoading: externalLoading = false }: AuthProviderProps) {
+  const auth = useAuth();
+  const isLoading = auth.isPending || externalLoading;
+  const t = useTranslations('auth');
 
   return (
-    <form action={handleSignOut}>
-      <Button
-        type="submit"
-        variant={variant}
-        size={size}
-        className={className}
-        disabled={isPending}
-      >
-        {isPending ? (
-          <Loader2 className="h-4 w-4 animate-spin mr-2" />
-        ) : children || (
-          <>
-            <LogOut className="h-4 w-4 mr-2" />
-            {t('signOut')}
-          </>
-        )}
-      </Button>
-    </form>
+    <Button
+      className="flex items-center gap-2"
+      variant="outline"
+      disabled={isLoading}
+      onClick={async () => {
+        // 使用配置的重定向路径
+        window.location.href = '/sign-in';
+      }}
+    >
+      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
+      {t('buttons.signOut')}
+    </Button>
   );
 }
 
 // 邮箱登录表单验证
-const emailSchema = z.object({
-  email: z.string().email()
+const formSchema = z.object({
+  email: z.string().email({
+    message: "Please enter a valid email address",
+  }),
 });
-
-type EmailFormValues = z.infer<typeof emailSchema>;
 
 // 邮箱登录组件
 export function EmailSignInForm({ isLoading: externalLoading = false }: AuthProviderProps) {
-  const { isPending, executeAction } = useAuthAction();
-  const isLoading = isPending || externalLoading;
-  const [emailSent, setEmailSent] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const auth = useAuth();
+  const isLoading = auth.isPending || externalLoading;
   const t = useTranslations('auth');
-
-  const form = useForm<EmailFormValues>({
-    resolver: zodResolver(emailSchema),
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: ""
     },
-    mode: "onTouched",
   });
-
-  const handleSignIn = async (values: EmailFormValues) => {
+  
+  const handleSignIn = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
-
-    executeAction(
+    
+    auth.executeAction(
       async () => await signInWithEmail(values.email),
       (result) => {
-        setIsSubmitting(false);
         if (result.success) {
-          setEmailSent(true);
-          if (result.message) {
-            toast.success(result.message);
-          }
+          setShowSuccess(true);
+          // 清空表单
+          form.reset();
         }
+        setIsSubmitting(false);
       },
       // 错误回调
-      () => setIsSubmitting(false)
+      () => {
+        setIsSubmitting(false);
+      }
     );
   };
-
+  
   // 组合加载状态
   const buttonLoading = isLoading || isSubmitting;
-
-  if (emailSent) {
+  
+  // 如果成功发送了登录链接，显示成功消息
+  if (showSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center space-y-4 text-center p-6 bg-gray-50 dark:bg-gray-800/50 rounded-md border border-gray-100 dark:border-gray-700">
-        <Mail className="h-12 w-12 text-primary dark:text-primary/90" />
-        <h3 className="text-lg font-medium dark:text-gray-100">{t('email.linkSent')}</h3>
-        <p className="text-muted-foreground text-sm dark:text-gray-300">
-          {t('email.checkEmail')}
-        </p>
+      <div className="space-y-4">
+        <div className="p-4 bg-green-50 dark:bg-green-900/30 border border-green-100 dark:border-green-900/50 rounded-md text-green-800 dark:text-green-300">
+          <h4 className="font-medium mb-1">{t('email.linkSent')}</h4>
+          <p className="text-sm text-green-700 dark:text-green-400">{t('email.checkEmail')}</p>
+        </div>
         <Button
+          type="button"
           variant="outline"
-          className="mt-4 w-full dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white"
-          onClick={() => setEmailSent(false)}
+          className="w-full"
+          onClick={() => setShowSuccess(false)}
         >
           {t('buttons.useAnotherEmail')}
         </Button>
