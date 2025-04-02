@@ -103,7 +103,7 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent 
               side="right" 
-              className="pr-0 bg-background/80 backdrop-blur-md border-l border-border/30 [&>button]:hidden"
+              className="pr-0 bg-background/80 dark:bg-background/60 backdrop-blur-md border-l border-border/30 dark:border-border/20 [&>button]:hidden"
             >
               <div className="absolute right-4 top-4">
                 <SheetClose>
