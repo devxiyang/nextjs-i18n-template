@@ -30,7 +30,7 @@ type UserAccountNavProps = {
   isLoading?: boolean;
 }
 
-// 从用户信息中提取姓名首字母
+// Extract initials from user information
 const getUserInitials = (user: User): string => {
   const fullName = user.user_metadata.full_name || user.email || "User"
   return fullName
@@ -47,7 +47,7 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
   const [isSigningOut, setIsSigningOut] = useState(false);
   const initialized = useRef(false);
   
-  // 使用useMemo优化用户详细信息的计算 - 一定要在所有条件语句之前定义
+  // Use useMemo to optimize user details calculation - must be defined before any conditional statements
   const userDetails = useMemo(() => {
     if (!user) return { initials: "", email: "", name: "", avatarUrl: "" };
     
@@ -59,7 +59,7 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
     return { initials, email, name, avatarUrl };
   }, [user]);
   
-  // 初始化认证状态
+  // Initialize authentication state
   useEffect(() => {
     if (!initialized.current && user) {
       auth.setUser(user);
@@ -71,7 +71,7 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
     }
   }, [user, auth]);
 
-  // 用户导航菜单项配置
+  // User navigation menu item configuration
   const userMenuItems = [
     {
       label: t('userNav.profile'),
@@ -79,26 +79,26 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
     }
   ];
   
-  // 处理登出
+  // Handle sign out
   const handleSignOut = async (e: React.MouseEvent) => {
     e.preventDefault();
     
-    // 显示加载动画
+    // Show loading animation
     setIsSigningOut(true);
     
-    // 添加超时逻辑，防止永久转圈圈，只重置状态不跳转
+    // Add timeout logic to prevent endless spinner, only reset state without redirect
     const timeout = setTimeout(() => {
       setIsSigningOut(false);
     }, 3000);
     
-    // 立即更新认证状态
+    // Immediately update authentication state
     auth.signOut();
     
-    // 执行服务器端登出操作
+    // Execute server-side logout operation
     auth.executeAction(
       async () => await AuthService.signOut(),
       () => {
-        clearTimeout(timeout); // 如果成功，清除超时计时器
+        clearTimeout(timeout); // If successful, clear the timeout timer
         window.location.replace(AUTH_PATHS.REDIRECT.AFTER_SIGN_OUT);
       }
     );
@@ -113,7 +113,7 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
     );
   }
   
-  // If in the process of signing out, show spinner - 优先检查是否正在登出
+  // If in the process of signing out, show spinner - check if signing out first
   if (isSigningOut) {
     return (
       <Button variant="ghost" className="relative h-8 w-8 rounded-full" disabled>
@@ -157,7 +157,7 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
         </div>
         <DropdownMenuSeparator />
         
-        {/* 从配置数组渲染菜单项 */}
+        {/* Render menu items from configuration array */}
         {userMenuItems.map(item => (
           <DropdownMenuItem key={item.href} asChild>
             <Link href={item.href}>{item.label}</Link>
