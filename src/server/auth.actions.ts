@@ -3,12 +3,15 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
+// Auth API paths
+const AUTH_CALLBACK_PATH = '/api/auth/callback';
+
 // Google sign in
 export async function signInWithGoogle(redirectTo?: string) {
   const supabase = await createClient();
   
   // Build callback URL (with optional redirect parameter)
-  const callbackUrl = new URL('/api/auth/callback', process.env.NEXT_PUBLIC_SITE_URL!);
+  const callbackUrl = new URL(AUTH_CALLBACK_PATH, process.env.NEXT_PUBLIC_SITE_URL!);
   
   // If a redirect target is provided, add it to the callback URL
   if (redirectTo) {
@@ -38,7 +41,7 @@ export async function signInWithEmail(email: string) {
   const supabase = await createClient();
   
   // Build callback URL
-  const callbackUrl = new URL('/api/auth/callback', process.env.NEXT_PUBLIC_SITE_URL!);
+  const callbackUrl = new URL(AUTH_CALLBACK_PATH, process.env.NEXT_PUBLIC_SITE_URL!);
   
   const { error } = await supabase.auth.signInWithOtp({
     email,

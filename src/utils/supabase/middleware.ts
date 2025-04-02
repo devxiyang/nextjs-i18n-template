@@ -1,6 +1,15 @@
-import { requiresAuth, AUTH_PATHS } from '@/config/auth.paths'
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+
+// Auth path constants
+const PROTECTED_PATH_PREFIX = '/protected';
+const SIGN_IN_PATH = '/sign-in';
+
+// Convention: Any route starting with '/protected' requires authentication
+function requiresAuth(path: string): boolean {
+  if (!path) return false;
+  return path.startsWith(PROTECTED_PATH_PREFIX);
+}
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -42,7 +51,7 @@ export async function updateSession(request: NextRequest) {
   if (!user && requiresAuth(pathWithoutLocale)) {
     // Redirect to login page with next parameter for return after login
     const url = request.nextUrl.clone()
-    url.pathname = AUTH_PATHS.SIGN_IN
+    url.pathname = SIGN_IN_PATH
     url.searchParams.set('next', request.nextUrl.pathname)
     
     return NextResponse.redirect(url)
