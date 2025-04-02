@@ -84,14 +84,8 @@ export default function Header() {
           
           <ThemeSwitcher />
           
-          {/* User Menu */}
-          {isLoading ? null : user ? (
-            <UserAccountNav user={user} />
-          ) : (
-            <Button asChild variant="ghost" size="sm" className="hover:text-foreground/70">
-              <Link href="/sign-in">{authT('header.signIn')}</Link>
-            </Button>
-          )}
+          {/* Always show UserAccountNav and let it handle authentication UI */}
+          <UserAccountNav user={user} isLoading={isLoading} />
           
           {/* Mobile Menu */}
           <Sheet open={open} onOpenChange={setOpen}>

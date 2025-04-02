@@ -12,7 +12,7 @@ import {
 import { useAuthAction } from "@/hooks/use-auth-action"
 import { signOut } from "@/server/auth.actions"
 import { User } from "@supabase/supabase-js"
-import { Loader2, LogIn } from "lucide-react"
+import { Loader2, LogIn, User as UserIcon } from "lucide-react"
 import Link from "next/link"
 import { useMemo, useEffect, useRef, useState } from "react"
 import { useTranslations } from "next-intl"
@@ -27,7 +27,8 @@ const AUTH_PATHS = {
 };
 
 type UserAccountNavProps = {
-  user: User
+  user: User | null;
+  isLoading?: boolean;
 }
 
 // 从用户信息中提取姓名首字母
@@ -41,7 +42,7 @@ const getUserInitials = (user: User): string => {
     .substring(0, 2)
 }
 
-export function UserAccountNav({ user }: UserAccountNavProps) {
+export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps) {
   const { isPending, executeAction } = useAuthAction();
   const t = useTranslations('auth');
   const [isSigningOut, setIsSigningOut] = useState(false);
@@ -50,13 +51,28 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
   const authStore = useAuthStore();
   const initialized = useRef(false);
   
+  // 使用useMemo优化用户详细信息的计算 - 一定要在所有条件语句之前定义
+  const userDetails = useMemo(() => {
+    if (!user) return { initials: "", email: "", name: "", avatarUrl: "" };
+    
+    const initials = getUserInitials(user);
+    const email = user.email as string;
+    const name = user.user_metadata.full_name || email || "User";
+    const avatarUrl = user.user_metadata.avatar_url;
+    
+    return { initials, email, name, avatarUrl };
+  }, [user]);
+  
   // Set the Zustand store with the user on component mount using useEffect
   // This ensures the store has the current user data
   useEffect(() => {
-    if (!initialized.current && user && !authStore.user) {
+    if (!initialized.current && user) {
       authStore.setUser(user);
       authStore.setAuthenticated(true);
       initialized.current = true;
+    } else if (!user && initialized.current) {
+      // Reset if user becomes null
+      authStore.signOut();
     }
   }, [user]);
   
@@ -68,16 +84,6 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
     }
   ];
   
-  // 使用useMemo优化用户详细信息的计算
-  const userDetails = useMemo(() => {
-    const initials = getUserInitials(user);
-    const email = user.email as string;
-    const name = user.user_metadata.full_name || email || "User";
-    const avatarUrl = user.user_metadata.avatar_url;
-    
-    return { initials, email, name, avatarUrl };
-  }, [user]);
-
   const handleSignOut = async (e: React.MouseEvent) => {
     e.preventDefault();
     
@@ -94,14 +100,23 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
       }
     );
   };
-
-  // If already signed out completely, show sign-in button
-  if (!authStore.isAuthenticated) {
+  
+  // If loading, show a loading spinner
+  if (isLoading) {
     return (
-      <Button asChild variant="ghost" size="sm" className="hover:text-foreground/70">
-        <Link href="/sign-in" className="flex items-center gap-1">
-          <LogIn className="h-4 w-4 mr-1" />
-          {t('header.signIn')}
+      <Button variant="ghost" className="relative h-8 w-8 rounded-full" disabled>
+        <Loader2 className="h-5 w-5 animate-spin" />
+      </Button>
+    );
+  }
+  
+  // If no user or not authenticated, show sign-in button
+  if (!user || !authStore.isAuthenticated) {
+    return (
+      <Button asChild variant="outline" size="sm" className="hover:bg-primary/10 px-3 py-2 border-primary/50">
+        <Link href="/sign-in" className="flex items-center gap-2">
+          <UserIcon className="h-5 w-5 text-primary" />
+          <span>{t('header.signIn')}</span>
         </Link>
       </Button>
     );
