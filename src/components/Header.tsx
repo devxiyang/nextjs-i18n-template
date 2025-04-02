@@ -5,11 +5,11 @@ import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { UserAccountNav } from '@/components/auth/user-account-nav';
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { navigation, siteConfig } from '@/config/site.config';
 import { Link } from '@/i18n/navigation';
@@ -101,6 +101,12 @@ export default function Header() {
                 <span className="sr-only">{t('header.openMenu')}</span>
               </Button>
             </SheetTrigger>
+            {open && (
+              <div 
+                className="fixed inset-0 z-40 bg-background/25 dark:bg-background/15 backdrop-blur-3xl transition-all duration-300" 
+                onClick={() => setOpen(false)}
+              />
+            )}
             <SheetContent 
               side="right" 
               className="pr-0 bg-background/80 dark:bg-background/60 backdrop-blur-md border-l border-border/30 dark:border-border/20 [&>button]:hidden"
