@@ -6,6 +6,8 @@ import { Inter, Source_Code_Pro } from "next/font/google";
 import { notFound } from 'next/navigation';
 import "./globals.css";
 import { siteConfig } from '@/config/site.config';
+import { createClient } from '@/utils/supabase/server';
+import { AuthProvider } from '@/components/providers/auth-provider';
 
 // Load fonts
 const inter = Inter({
@@ -34,6 +36,7 @@ export function generateStaticParams() {
  * This is a Server Component that:
  * 1. Handles i18n setup and language detection
  * 2. Sets up theming and base layout structure
+ * 3. Initializes authentication state
  */
 export default async function RootLayout({
   children,
@@ -54,6 +57,10 @@ export default async function RootLayout({
     notFound();
   }
   
+  // Get session and user data from Supabase
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
@@ -61,6 +68,7 @@ export default async function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextIntlClientProvider locale={locale} messages={messages}>
+            <AuthProvider initialUser={user} />
             <Header />
             <main className="flex-grow">
               {children}

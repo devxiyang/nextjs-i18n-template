@@ -14,8 +14,9 @@ import { signOut } from "@/server/auth.actions"
 import { User } from "@supabase/supabase-js"
 import { Loader2 } from "lucide-react"
 import Link from "next/link"
-import { useMemo } from "react"
+import { useMemo, useEffect, useRef } from "react"
 import { useTranslations } from "next-intl"
+import useAuthStore from "@/store/authStore"
 
 // Define AUTH_PATHS constant locally instead of importing
 const AUTH_PATHS = {
@@ -44,6 +45,20 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
   const { isPending, executeAction } = useAuthAction();
   const t = useTranslations('auth');
   
+  // Use Zustand auth store
+  const authStore = useAuthStore();
+  const initialized = useRef(false);
+  
+  // Set the Zustand store with the user on component mount using useEffect
+  // This ensures the store has the current user data
+  useEffect(() => {
+    if (!initialized.current && user && !authStore.user) {
+      authStore.setUser(user);
+      authStore.setAuthenticated(true);
+      initialized.current = true;
+    }
+  }, [user]);
+  
   // 用户导航菜单项配置 - 使用配置文件中的路径
   const userMenuItems = [
     {
@@ -65,14 +80,21 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
   const handleSignOut = async (e: React.MouseEvent) => {
     e.preventDefault();
     
+    // Update Zustand store immediately for UI responsiveness
+    authStore.signOut();
+    
     executeAction(
       async () => await signOut(),
       () => {
-        // 登出后重定向到首页，让next-intl处理locale
-        window.location.href = AUTH_PATHS.REDIRECT.AFTER_SIGN_OUT;
+        window.location.replace(AUTH_PATHS.REDIRECT.AFTER_SIGN_OUT);
       }
     );
   };
+
+  // If not authenticated in store, show nothing
+  if (!authStore.isAuthenticated) {
+    return null;
+  }
 
   return (
     <DropdownMenu>
