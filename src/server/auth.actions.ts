@@ -1,117 +1,65 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
-import { Provider } from "@supabase/supabase-js";
-import { AUTH_PATHS } from "@/config/auth.paths";
+import { redirect } from "next/navigation";
 
-// 统一的认证配置
-const getAuthConfig = () => {
-  // 获取站点URL - 这应该是一个完整的URL，包括协议
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+// Google 登录
+export async function signInWithGoogle(redirectTo?: string) {
+  const supabase = await createClient();
   
-  if (!siteUrl) {
-    throw new Error("NEXT_PUBLIC_SITE_URL is not defined in environment variables");
+  // 构建回调 URL（带有可选的重定向参数）
+  const callbackUrl = new URL('/api/auth/callback', process.env.NEXT_PUBLIC_SITE_URL!);
+  
+  // 如果提供了重定向目标，将其添加到回调 URL
+  if (redirectTo) {
+    callbackUrl.searchParams.set('next', redirectTo);
   }
   
-  return {
-    redirectTo: `${siteUrl}${AUTH_PATHS.API.CALLBACK}`,
-    scopes: 'email profile',
-    queryParams: {
-      access_type: 'offline',
-      prompt: 'consent',
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: callbackUrl.toString(),
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      }
     }
-  };
-};
+  });
 
-// 通用的社交登录方法
-export async function signInWithSocialProvider(provider: Provider, next?: string) {
-  try {
-    const supabase = await createClient();
-    const config = getAuthConfig();
-    
-    // 构建登录选项，添加 next 参数
-    const options = {
-      ...config,
-    };
-    
-    // 如果提供了 next 参数，将其添加到回调 URL
-    if (next) {
-      const callbackUrl = new URL(options.redirectTo);
-      callbackUrl.searchParams.set('next', next);
-      options.redirectTo = callbackUrl.toString();
-    }
-    
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options,
-    });
-
-    if (error) {
-      console.error(`Error signing in with ${provider}:`, error);
-      return { error: error.message, success: false };
-    }
-
-    if (!data.url) {
-      console.error(`No redirect URL returned from Supabase for ${provider}`);
-      return { error: "No redirect URL returned", success: false };
-    }
-
-    // 不使用Next.js的redirect，而是返回URL，让客户端处理重定向
-    return { redirectUrl: data.url, success: true };
-
-  } catch (error) {
-    console.error(`Unexpected error during ${provider} sign in:`, error);
-    return { error: "An unexpected error occurred", success: false };
+  if (error) {
+    return { error: error.message, success: false };
   }
-}
 
-// Google 登录 - 使用通用方法
-export async function signInWithGoogle(next?: string) {
-  return signInWithSocialProvider('google', next);
+  return { redirectUrl: data.url, success: true };
 }
 
 // 邮箱登录 - 发送登录链接
 export async function signInWithEmail(email: string) {
-  try {
-    const supabase = await createClient();
-    const config = getAuthConfig();
-    
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: config.redirectTo,
-      },
-    });
+  const supabase = await createClient();
+  
+  // 构建回调 URL
+  const callbackUrl = new URL('/api/auth/callback', process.env.NEXT_PUBLIC_SITE_URL!);
+  
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: callbackUrl.toString(),
+    },
+  });
 
-    if (error) {
-      console.error(`Error sending email login link:`, error);
-      return { error: error.message, success: false };
-    }
-
-    return { 
-      success: true, 
-      message: "登录链接已发送到您的邮箱，请查收并点击链接完成登录" 
-    };
-
-  } catch (error) {
-    console.error(`Unexpected error during email sign in:`, error);
-    return { error: "发送登录链接时出现意外错误", success: false };
+  if (error) {
+    return { error: error.message, success: false };
   }
+
+  return { 
+    success: true, 
+    message: "登录链接已发送到您的邮箱，请查收并点击链接完成登录" 
+  };
 }
 
 // 登出功能
 export async function signOut() {
-  try {
-    const supabase = await createClient();
-    await supabase.auth.signOut();
-    
-    // 清除cookie的工作已经通过createClient内部处理
-    
-    revalidatePath("/", "layout");
-    return { success: true };
-  } catch (error) {
-    console.error("Error signing out:", error);
-    return { error: "Failed to sign out", success: false };
-  }
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  return redirect('/');
 }

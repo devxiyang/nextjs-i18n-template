@@ -1,38 +1,25 @@
 import { NextResponse } from 'next/server'
 // The client you created from the Server-Side Auth instructions
 import { createClient } from '@/utils/supabase/server'
-import { AUTH_PATHS } from '@/config/auth.paths'
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
-  const code = searchParams.get('code')
-  
-  // 使用搜索参数中的 next 值，如果没有则使用默认值
-  const next = searchParams.get('next') || AUTH_PATHS.REDIRECT.AFTER_SIGN_IN
-  
-  // 错误重定向地址
-  const errorUrl = `${origin}/auth/auth-code-error` 
+  const requestUrl = new URL(request.url)
+  const code = requestUrl.searchParams.get('code')
+  const next = requestUrl.searchParams.get('next') || '/'
 
-  if (!code) {
-    console.error('No code provided in callback')
-    return NextResponse.redirect(errorUrl)
-  }
-
-  try {
+  if (code) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     
-    if (error) {
-      console.error('Error exchanging code for session:', error.message)
-      return NextResponse.redirect(errorUrl)
+    if (!error) {
+      // 确保路径包含语言前缀
+      const hasLanguagePrefix = /^\/[a-z]{2}(\/|$)/.test(next)
+      const redirectPath = hasLanguagePrefix ? next : `/en${next}`
+      
+      return NextResponse.redirect(new URL(redirectPath, requestUrl.origin))
     }
-    
-    // 直接使用当前请求的origin作为基础URL
-    const redirectPath = next.startsWith('/') ? next : `/${next}`
-    return NextResponse.redirect(`${origin}${redirectPath}`)
-    
-  } catch (err) {
-    console.error('Unexpected error in auth callback:', err)
-    return NextResponse.redirect(errorUrl)
   }
+
+  // 默认重定向到首页
+  return NextResponse.redirect(new URL('/en', requestUrl.origin))
 }
