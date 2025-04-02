@@ -35,7 +35,7 @@ export function AuthCard({
         {footer && <CardFooter>{footer}</CardFooter>}
       </Card>
       <div className="mt-8 text-center text-xs text-gray-500 dark:text-gray-400">
-        © {new Date().getFullYear()} DevSEO. 保留所有权利。
+        © {new Date().getFullYear()} DevSEO. All rights reserved.
       </div>
     </div>
   );

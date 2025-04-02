@@ -15,8 +15,15 @@ import { User } from "@supabase/supabase-js"
 import { Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useMemo } from "react"
-import { AUTH_PATHS } from "@/config/auth.paths"
 import { useTranslations } from "next-intl"
+
+// Define AUTH_PATHS constant
+const AUTH_PATHS = {
+  PROFILE: "/protected/profile",
+  REDIRECT: {
+    AFTER_SIGN_OUT: "/"
+  }
+};
 
 type UserAccountNavProps = {
   user: User
@@ -49,7 +56,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
   const userDetails = useMemo(() => {
     const initials = getUserInitials(user);
     const email = user.email as string;
-    const name = user.user_metadata.full_name || email || "用户";
+    const name = user.user_metadata.full_name || email || "User";
     const avatarUrl = user.user_metadata.avatar_url;
     
     return { initials, email, name, avatarUrl };

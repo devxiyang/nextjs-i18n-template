@@ -28,7 +28,7 @@ export function useAuthAction() {
         const result = await action();
         
         if (!result.success) {
-          const errorMessage = result.error || "操作失败，请稍后重试";
+          const errorMessage = result.error || "Operation failed, please try again later";
           setError(errorMessage);
           toast.error(errorMessage);
           if (onError) onError(errorMessage);
@@ -39,7 +39,7 @@ export function useAuthAction() {
           onSuccess(result);
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "未知错误";
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
         setError(errorMessage);
         toast.error(errorMessage);
         if (onError) onError(errorMessage);
