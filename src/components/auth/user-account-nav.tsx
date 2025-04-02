@@ -90,12 +90,18 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
     // Show loading spinner
     setIsSigningOut(true);
     
+    // 添加超时逻辑，防止永久转圈圈，只重置状态不跳转
+    const timeout = setTimeout(() => {
+      setIsSigningOut(false);
+    }, 3000);
+    
     // Update Zustand store immediately for UI responsiveness
     authStore.signOut();
     
     executeAction(
       async () => await signOut(),
       () => {
+        clearTimeout(timeout); // 如果成功，清除超时计时器
         window.location.replace(AUTH_PATHS.REDIRECT.AFTER_SIGN_OUT);
       }
     );
@@ -103,6 +109,15 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
   
   // If loading, show a loading spinner
   if (isLoading) {
+    return (
+      <Button variant="ghost" className="relative h-8 w-8 rounded-full" disabled>
+        <Loader2 className="h-5 w-5 animate-spin" />
+      </Button>
+    );
+  }
+  
+  // If in the process of signing out, show spinner - 优先检查是否正在登出
+  if (isSigningOut) {
     return (
       <Button variant="ghost" className="relative h-8 w-8 rounded-full" disabled>
         <Loader2 className="h-5 w-5 animate-spin" />
@@ -118,15 +133,6 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
           <UserIcon className="h-5 w-5 text-primary" />
           <span>{t('header.signIn')}</span>
         </Link>
-      </Button>
-    );
-  }
-  
-  // If in the process of signing out, show spinner
-  if (isSigningOut) {
-    return (
-      <Button variant="ghost" className="relative h-8 w-8 rounded-full" disabled>
-        <Loader2 className="h-5 w-5 animate-spin" />
       </Button>
     );
   }
