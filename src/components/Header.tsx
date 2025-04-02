@@ -37,7 +37,7 @@ export default function Header() {
         const { data: { user } } = await supabase.auth.getUser();
         setUser(user);
         
-        // 同步到 auth store
+        // Sync to auth store
         if (user) {
           auth.setUser(user);
           auth.setAuthenticated(true);
@@ -62,7 +62,7 @@ export default function Header() {
         const newUser = session?.user ?? null;
         setUser(newUser);
         
-        // 同步到 auth store
+        // Sync to auth store
         if (newUser) {
           auth.setUser(newUser);
           auth.setAuthenticated(true);

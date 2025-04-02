@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { User } from '@supabase/supabase-js';
 import { toast } from 'sonner';
 
-// 认证结果类型
+// Authentication result type
 export type AuthActionResult = {
   success: boolean;
   error?: string;
@@ -10,7 +10,7 @@ export type AuthActionResult = {
   message?: string;
 };
 
-// 合并的认证状态接口
+// Combined authentication state interface
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
@@ -18,14 +18,14 @@ interface AuthState {
   error: string | null;
   isPending: boolean;
   
-  // 状态管理方法
+  // State management methods
   setUser: (user: User | null) => void;
   setAuthenticated: (isAuthenticated: boolean) => void;
   setLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
   signOut: () => void;
   
-  // 操作执行方法
+  // Action execution method
   executeAction: <T extends AuthActionResult>(
     action: () => Promise<T>,
     onSuccess?: (result: T) => void,
@@ -33,23 +33,23 @@ interface AuthState {
   ) => Promise<void>;
 }
 
-// 创建合并后的认证状态和操作钩子
+// Create combined authentication state and action hook
 const useAuth = create<AuthState>((set, get) => ({
-  // 状态
+  // State
   user: null,
   isAuthenticated: false,
   isLoading: true,
   error: null,
   isPending: false,
   
-  // 状态管理方法
+  // State management methods
   setUser: (user) => set({ user, isAuthenticated: !!user }),
   setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
   setLoading: (isLoading) => set({ isLoading }),
   setError: (error) => set({ error }),
   signOut: () => set({ user: null, isAuthenticated: false }),
   
-  // 操作执行方法
+  // Action execution method
   executeAction: async (action, onSuccess, onError) => {
     set({ isPending: true, error: null });
     

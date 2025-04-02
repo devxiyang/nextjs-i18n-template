@@ -6,16 +6,16 @@ import { AuthActionResult } from "@/hooks/useAuth";
 // Auth API paths
 const AUTH_CALLBACK_PATH = '/api/auth/callback';
 
-// 集中认证服务
+// Centralized Authentication Service
 export const AuthService = {
-  // 获取当前用户
+  // Get current user
   getCurrentUser: async (): Promise<User | null> => {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     return user;
   },
   
-  // Google登录
+  // Google sign in
   signInWithGoogle: async (redirectTo?: string): Promise<AuthActionResult> => {
     const supabase = await createClient();
     
@@ -45,7 +45,7 @@ export const AuthService = {
     return { redirectUrl: data.url, success: true };
   },
   
-  // 邮箱登录
+  // Email login
   signInWithEmail: async (email: string): Promise<AuthActionResult> => {
     const supabase = await createClient();
     
@@ -69,7 +69,7 @@ export const AuthService = {
     };
   },
   
-  // 退出登录
+  // Sign out
   signOut: async (): Promise<AuthActionResult> => {
     const supabase = await createClient();
     const { error } = await supabase.auth.signOut();
@@ -81,7 +81,7 @@ export const AuthService = {
     return { success: true };
   },
   
-  // 退出登录并重定向
+  // Sign out with redirect
   signOutWithRedirect: async () => {
     const supabase = await createClient();
     await supabase.auth.signOut();

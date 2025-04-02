@@ -3,25 +3,25 @@ import { routing } from './i18n/routing';
 import { NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
-// 创建一个处理国际化的中间件
+// Create middleware to handle internationalization
 const intlMiddleware = createIntlMiddleware(routing);
 
-// 组合中间件：先处理 Supabase 会话，然后处理国际化
+// Combined middleware: first handle Supabase session, then handle i18n
 export async function middleware(request: NextRequest) {
-  // 先处理 Supabase 会话
+  // First process Supabase session
   const supabaseResponse = await updateSession(request);
   
-  // 如果 Supabase 中间件返回了重定向或其他特殊响应，直接返回
+  // If Supabase middleware returns a redirect or other special response, return it directly
   if (supabaseResponse.status !== 200) {
     return supabaseResponse;
   }
   
-  // 否则继续处理国际化路由
+  // Otherwise continue with i18n routing
   return intlMiddleware(request);
 }
  
 export const config = {
-  // 匹配所有需要国际化的路径，排除静态资源和API路由
+  // Match all paths that need internationalization, exclude static assets and API routes
   matcher: ['/((?!_next|api|.*\\..*).*)']
   // matcher: [
   //   /*

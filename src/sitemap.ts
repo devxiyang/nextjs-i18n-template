@@ -1,30 +1,34 @@
 import { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
 import { navigation } from '@/config/site.config'
+import { siteConfig } from "@/config/site.config";
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ''
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   
-  // 定义所有需要生成站点地图的路径
-  // 根据配置的语言定义路由
-  const routes = navigation.map((item) => item.href)
-
-  // 为每个语言生成对应的 URL
-  const sitemapEntries = routing.locales.flatMap(locale => 
-    routes.map(route => ({
-      url: `${baseUrl}/${locale}${route}`,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: route === '' ? 1 : route === '/templates' ? 0.8 : 0.6,
-    }))
-  )
-
-  // 添加根路径，它会重定向到默认语言
-  sitemapEntries.push({
+  // Define all paths that need to be included in the sitemap
+  // Create routes based on configured languages
+  const routes = siteConfig.locales.flatMap(locale => {
+    
+    // Generate URLs for each language
+    return [
+      {
+        url: `${baseUrl}/${locale}`,
+        lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: 1.0,
+      },
+      // Add more routes as needed for each language
+    ];
+  });
+  
+  // Add root path which redirects to default language
+  routes.push({
     url: baseUrl,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
-    priority: 1,
-  })
-
-  return sitemapEntries
+    priority: 0.8,
+  });
+  
+  return routes;
 } 
