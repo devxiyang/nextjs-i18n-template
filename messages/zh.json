@@ -10,7 +10,11 @@
     },
     "header": {
       "closeMenu": "关闭菜单",
-      "openMenu": "打开菜单"
+      "openMenu": "打开菜单",
+      "navigation": "导航",
+      "mobileMenu": "移动菜单",
+      "swipeToClose": "向右滑动关闭",
+      "tapOutsideToClose": "点击外部关闭"
     }
   },
   "auth": {

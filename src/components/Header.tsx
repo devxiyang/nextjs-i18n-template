@@ -3,21 +3,29 @@
 import LocaleSwitcher from '@/components/LocaleSwitcher';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { UserAccountNav } from '@/components/auth/user-account-nav';
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { navigation, siteConfig } from '@/config/site.config';
-import { Menu, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { User } from '@supabase/supabase-js';
+import { Menu, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 
 export default function Header() {
   const t = useTranslations('common');
   const authT = useTranslations('auth');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -48,12 +56,8 @@ export default function Header() {
     };
   }, []);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
-    <header className="w-full py-4 px-6 bg-background text-foreground">
+    <header className="sticky top-0 w-full py-4 px-6 bg-background/95 backdrop-blur-sm text-foreground z-40 border-b border-border/20">
       <div className="container mx-auto flex justify-between items-center">
         <Link 
           href="/"
@@ -89,45 +93,54 @@ export default function Header() {
             </Button>
           )}
           
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden p-2 text-foreground/70 hover:text-foreground focus:outline-none" 
-            onClick={toggleMenu}
-            aria-label={isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu */}
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">{t('header.openMenu')}</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent 
+              side="right" 
+              className="pr-0 bg-background/80 backdrop-blur-md border-l border-border/30 [&>button]:hidden"
+            >
+              <div className="absolute right-4 top-4">
+                <SheetClose>
+                  <X className="h-4 w-4 transition-transform group-hover:rotate-90" />
+                </SheetClose>
+              </div>
+              <SheetHeader>
+                <SheetTitle>{t('header.navigation')}</SheetTitle>
+              </SheetHeader>
+              
+              <nav className="flex flex-col gap-4 mt-4">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="px-6 py-3 hover:bg-accent/70 hover:text-accent-foreground transition-colors rounded-l-md"
+                    onClick={() => setOpen(false)}
+                  >
+                    {t(`nav.${item.name.toLowerCase()}`)}
+                  </Link>
+                ))}
+                
+                {/* Add login/register link on mobile */}
+                {!user && (
+                  <Link
+                    href="/sign-in"
+                    className="px-6 py-3 hover:bg-accent/70 hover:text-accent-foreground transition-colors rounded-l-md"
+                    onClick={() => setOpen(false)}
+                  >
+                    {authT('header.signInRegister')}
+                  </Link>
+                )}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
-      
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-background border-t border-border py-4 z-50">
-          <nav className="container mx-auto px-6 flex flex-col gap-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="hover:text-foreground/70 transition-colors py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t(`nav.${item.name.toLowerCase()}`)}
-              </Link>
-            ))}
-            
-            {/* Add login/register link on mobile */}
-            {!user && (
-              <Link
-                href="/sign-in"
-                className="hover:text-foreground/70 transition-colors py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {authT('header.signInRegister')}
-              </Link>
-            )}
-          </nav>
-        </div>
-      )}
     </header>
   );
 } 

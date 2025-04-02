@@ -10,7 +10,11 @@
     },
     "header": {
       "closeMenu": "Close menu",
-      "openMenu": "Open menu"
+      "openMenu": "Open menu",
+      "navigation": "Navigation",
+      "mobileMenu": "Mobile Menu",
+      "swipeToClose": "Swipe to close",
+      "tapOutsideToClose": "Tap outside to close"
     }
   },
   "auth": {
