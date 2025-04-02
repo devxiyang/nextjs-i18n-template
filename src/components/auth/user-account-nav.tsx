@@ -14,7 +14,7 @@ import { signOut } from "@/server/auth.actions"
 import { User } from "@supabase/supabase-js"
 import { Loader2 } from "lucide-react"
 import Link from "next/link"
-import { useMemo, useEffect, useRef } from "react"
+import { useMemo, useEffect, useRef, useState } from "react"
 import { useTranslations } from "next-intl"
 import useAuthStore from "@/store/authStore"
 
@@ -44,6 +44,7 @@ const getUserInitials = (user: User): string => {
 export function UserAccountNav({ user }: UserAccountNavProps) {
   const { isPending, executeAction } = useAuthAction();
   const t = useTranslations('auth');
+  const [isSigningOut, setIsSigningOut] = useState(false);
   
   // Use Zustand auth store
   const authStore = useAuthStore();
@@ -80,6 +81,9 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
   const handleSignOut = async (e: React.MouseEvent) => {
     e.preventDefault();
     
+    // Show loading spinner
+    setIsSigningOut(true);
+    
     // Update Zustand store immediately for UI responsiveness
     authStore.signOut();
     
@@ -91,9 +95,13 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
     );
   };
 
-  // If not authenticated in store, show nothing
-  if (!authStore.isAuthenticated) {
-    return null;
+  // If not authenticated in store or signing out, show loading spinner
+  if (!authStore.isAuthenticated || isSigningOut) {
+    return (
+      <Button variant="ghost" className="relative h-8 w-8 rounded-full" disabled>
+        <Loader2 className="h-5 w-5 animate-spin" />
+      </Button>
+    );
   }
 
   return (
