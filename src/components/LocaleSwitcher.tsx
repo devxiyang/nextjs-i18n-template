@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger 
 } from './ui/dropdown-menu';
 import { Globe } from "lucide-react";
-import useUserStore from '@/store/userStore';
+import useLanguage from '@/hooks/useLanguage';
 import { useEffect } from 'react';
 
 // Language display names mapping
@@ -40,8 +40,8 @@ export default function LocaleSwitcher() {
   const pathname = usePathname();
   
   // Use Zustand state
-  const currentLanguage = useUserStore(state => state.preferences.language);
-  const setUserLanguage = useUserStore(state => state.setLanguage);
+  const currentLanguage = useLanguage(state => state.language);
+  const setUserLanguage = useLanguage(state => state.setLanguage);
   
   // Synchronize current language to Zustand on page load
   useEffect(() => {
