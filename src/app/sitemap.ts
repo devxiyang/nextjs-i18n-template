@@ -1,7 +1,5 @@
-import { MetadataRoute } from 'next'
-import { routing } from '@/i18n/routing'
-import { navigation } from '@/config/site.config'
 import { siteConfig } from "@/config/site.config";
+import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';

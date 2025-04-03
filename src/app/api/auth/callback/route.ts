@@ -4,8 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 
 // Auth and locale constants
 const DEFAULT_REDIRECT_PATH = '/';
-const DEFAULT_LANGUAGE_PREFIX = '/en';
-const LANGUAGE_PREFIX_REGEX = /^\/[a-z]{2}(\/|$)/;
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)

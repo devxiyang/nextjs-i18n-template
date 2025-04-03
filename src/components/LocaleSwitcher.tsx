@@ -9,9 +9,9 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
-} from './ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 import { Globe } from "lucide-react";
-import useLanguage from '@/hooks/useLanguage';
+import useLanguage from '@/hooks/use-language';
 import { useEffect } from 'react';
 
 // Language display names mapping

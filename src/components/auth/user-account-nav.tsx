@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuthAction } from "@/hooks/use-auth-action"
-import { signOut } from "@/server/auth.actions"
+import { signOut } from "@/server/auth-actions"
 import { User } from "@supabase/supabase-js"
 import { Loader2, User as UserIcon } from "lucide-react"
 import { useTranslations } from "next-intl"

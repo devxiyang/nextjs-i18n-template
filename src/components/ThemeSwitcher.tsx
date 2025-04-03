@@ -1,10 +1,10 @@
 "use client";
 
 import { useTheme as useNextTheme } from "next-themes";
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import useTheme from '@/hooks/useTheme';
+import useTheme from '@/hooks/use-theme';
 import { useTranslations } from "next-intl";
 
 export default function ThemeSwitcher() {
