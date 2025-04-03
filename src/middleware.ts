@@ -1,7 +1,7 @@
 import createIntlMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
-import { NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
+import { NextRequest } from 'next/server';
 
 // Create middleware to handle internationalization
 const intlMiddleware = createIntlMiddleware(routing);

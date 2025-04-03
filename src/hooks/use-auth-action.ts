@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export type AuthActionResult = {
   success: boolean;
@@ -14,7 +13,6 @@ export type AuthActionResult = {
 export function useAuthAction() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   
   const executeAction = async (
     action: () => Promise<AuthActionResult>,
