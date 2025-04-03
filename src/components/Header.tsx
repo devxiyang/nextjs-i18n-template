@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { navigation, siteConfig } from '@/config/site.config';
 import { Link } from '@/i18n/navigation';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
 import { Menu, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -47,7 +47,8 @@ export default function Header() {
     const supabase = createClient();
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setUser(session?.user ?? null);
+        const newUser = session?.user ?? null;
+        setUser(newUser);
       }
     );
 
@@ -84,14 +85,8 @@ export default function Header() {
           
           <ThemeSwitcher />
           
-          {/* User Menu */}
-          {isLoading ? null : user ? (
-            <UserAccountNav user={user} />
-          ) : (
-            <Button asChild variant="ghost" size="sm" className="hover:text-foreground/70">
-              <Link href="/sign-in">{authT('header.signIn')}</Link>
-            </Button>
-          )}
+          {/* Always show UserAccountNav and let it handle authentication UI */}
+          <UserAccountNav user={user} isLoading={isLoading} />
           
           {/* Mobile Menu */}
           <Sheet open={open} onOpenChange={setOpen}>

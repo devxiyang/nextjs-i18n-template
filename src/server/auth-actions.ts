@@ -1,13 +1,15 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { Provider } from "@supabase/supabase-js";
-import { AUTH_PATHS } from "@/config/auth.paths";
 
-// 统一的认证配置
+// Auth API paths
+const AUTH_CALLBACK_PATH = '/api/auth/callback';
+
+// Get authentication configuration
 const getAuthConfig = () => {
-  // 获取站点URL - 这应该是一个完整的URL，包括协议
+  // Get site URL from environment variables
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   
   if (!siteUrl) {
@@ -15,7 +17,7 @@ const getAuthConfig = () => {
   }
   
   return {
-    redirectTo: `${siteUrl}${AUTH_PATHS.API.CALLBACK}`,
+    redirectTo: `${siteUrl}${AUTH_CALLBACK_PATH}`,
     scopes: 'email profile',
     queryParams: {
       access_type: 'offline',
@@ -24,18 +26,18 @@ const getAuthConfig = () => {
   };
 };
 
-// 通用的社交登录方法
+// Generic social provider sign in
 export async function signInWithSocialProvider(provider: Provider, next?: string) {
   try {
     const supabase = await createClient();
     const config = getAuthConfig();
     
-    // 构建登录选项，添加 next 参数
+    // Build login options, add next parameter
     const options = {
       ...config,
     };
     
-    // 如果提供了 next 参数，将其添加到回调 URL
+    // If next parameter is provided, add it to callback URL
     if (next) {
       const callbackUrl = new URL(options.redirectTo);
       callbackUrl.searchParams.set('next', next);
@@ -57,7 +59,7 @@ export async function signInWithSocialProvider(provider: Provider, next?: string
       return { error: "No redirect URL returned", success: false };
     }
 
-    // 不使用Next.js的redirect，而是返回URL，让客户端处理重定向
+    // Don't use Next.js redirect, return URL for client-side handling
     return { redirectUrl: data.url, success: true };
 
   } catch (error) {
@@ -66,18 +68,18 @@ export async function signInWithSocialProvider(provider: Provider, next?: string
   }
 }
 
-// Google 登录 - 使用通用方法
+// Google sign in - using generic method
 export async function signInWithGoogle(next?: string) {
   return signInWithSocialProvider('google', next);
 }
 
-// 邮箱登录 - 发送登录链接
+// Email sign in - send login link
 export async function signInWithEmail(email: string) {
   try {
     const supabase = await createClient();
     const config = getAuthConfig();
     
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
         emailRedirectTo: config.redirectTo,
@@ -91,22 +93,22 @@ export async function signInWithEmail(email: string) {
 
     return { 
       success: true, 
-      message: "登录链接已发送到您的邮箱，请查收并点击链接完成登录" 
+      message: "Login link sent to your email. Please check your inbox and click the link to complete login."
     };
 
   } catch (error) {
     console.error(`Unexpected error during email sign in:`, error);
-    return { error: "发送登录链接时出现意外错误", success: false };
+    return { error: "An unexpected error occurred when sending login link", success: false };
   }
 }
 
-// 登出功能
+// Sign out
 export async function signOut() {
   try {
     const supabase = await createClient();
     await supabase.auth.signOut();
     
-    // 清除cookie的工作已经通过createClient内部处理
+    // Cookie clearing is handled internally by createClient
     
     revalidatePath("/", "layout");
     return { success: true };
@@ -114,4 +116,4 @@ export async function signOut() {
     console.error("Error signing out:", error);
     return { error: "Failed to sign out", success: false };
   }
-}
+} 

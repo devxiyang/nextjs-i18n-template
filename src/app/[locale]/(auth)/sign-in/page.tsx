@@ -1,17 +1,17 @@
 "use client";
+
 import { useTranslations } from "next-intl";
 import { useSearchParams } from 'next/navigation';
 
 import { AuthCard } from "@/components/auth/auth-card";
 import { GoogleSignInButton, EmailSignInForm } from "@/components/auth/auth-providers";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AUTH_PATHS } from "@/config/auth.paths";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Separator } from "@/components/ui/separator";
 
-// 加载状态组件
+// Loading state component
 function LoadingButton() {
   return (
     <div className="w-full h-[52px] rounded-md bg-gray-100 dark:bg-gray-700 animate-pulse flex items-center justify-center">

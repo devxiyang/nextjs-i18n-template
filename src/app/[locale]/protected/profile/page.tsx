@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { AuthCard } from "@/components/auth/auth-card";
 import { SignOutButton } from "@/components/auth/auth-providers";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,20 +8,16 @@ import { getTranslations } from "next-intl/server";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
-  const { data: { user }, error } = await supabase.auth.getUser();
-  const t = await getTranslations('auth.profile');
-  
-  if (error || !user) {
-    // 如果没有用户，重定向到登录页面
-    return redirect("/sign-in");
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // If no user, redirect to login page
+  if (!user) {
+    return redirect('/sign-in?next=/protected/profile');
   }
-  
-  // 获取用户详细信息
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
+
+  // Get user details
+  const t = await getTranslations('profile');
   
   return (
     <AuthCard

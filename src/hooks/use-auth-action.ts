@@ -2,9 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
-type AuthActionResult = {
+export type AuthActionResult = {
   success: boolean;
   error?: string;
   redirectUrl?: string;
@@ -14,7 +13,6 @@ type AuthActionResult = {
 export function useAuthAction() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   
   const executeAction = async (
     action: () => Promise<AuthActionResult>,
@@ -28,10 +26,19 @@ export function useAuthAction() {
         const result = await action();
         
         if (!result.success) {
-          const errorMessage = result.error || "操作失败，请稍后重试";
+          const errorMessage = result.error || "Operation failed, please try again later";
           setError(errorMessage);
           toast.error(errorMessage);
           if (onError) onError(errorMessage);
+          return;
+        }
+        
+        if (result.message) {
+          toast.success(result.message);
+        }
+        
+        if (result.redirectUrl) {
+          window.location.href = result.redirectUrl;
           return;
         }
         
@@ -39,7 +46,7 @@ export function useAuthAction() {
           onSuccess(result);
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "未知错误";
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
         setError(errorMessage);
         toast.error(errorMessage);
         if (onError) onError(errorMessage);

@@ -1,11 +1,11 @@
 import Header from '@/components/Header';
+import { siteConfig } from '@/config/site.config';
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from "next-themes";
 import { Inter, Source_Code_Pro } from "next/font/google";
 import { notFound } from 'next/navigation';
 import "./globals.css";
-import { siteConfig } from '@/config/site.config';
 
 // Load fonts
 const inter = Inter({
@@ -34,6 +34,7 @@ export function generateStaticParams() {
  * This is a Server Component that:
  * 1. Handles i18n setup and language detection
  * 2. Sets up theming and base layout structure
+ * 3. Initializes authentication state via Header component
  */
 export default async function RootLayout({
   children,

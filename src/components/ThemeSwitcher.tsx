@@ -1,18 +1,18 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { Button } from './ui/button';
+import { useTheme as useNextTheme } from "next-themes";
+import { Button } from '@/components/ui/button';
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import useUserStore from '@/store/userStore';
+import useTheme from '@/hooks/use-theme';
 import { useTranslations } from "next-intl";
 
 export default function ThemeSwitcher() {
   const t = useTranslations('common');
-  const { theme, resolvedTheme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useNextTheme();
   const [mounted, setMounted] = useState(false);
-  const userStoreTheme = useUserStore(state => state.preferences.theme);
-  const setUserStoreTheme = useUserStore(state => state.setTheme);
+  const userStoreTheme = useTheme(state => state.theme);
+  const setUserStoreTheme = useTheme(state => state.setTheme);
 
   // Synchronize theme on render
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function ThemeSwitcher() {
     if (userStoreTheme && userStoreTheme !== 'system' && userStoreTheme !== theme) {
       setTheme(userStoreTheme);
     }
-  }, [userStoreTheme, setTheme]);
+  }, [userStoreTheme, setTheme, theme]);
 
   // Toggle theme and update the store
   const toggleTheme = () => {
