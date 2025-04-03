@@ -9,13 +9,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import useAuth from "@/hooks/useAuth"
 import { AuthService } from "@/services/auth.service"
 import { User } from "@supabase/supabase-js"
-import { Loader2, LogIn, User as UserIcon } from "lucide-react"
-import Link from "next/link"
-import { useMemo, useEffect, useRef, useState } from "react"
+import { Loader2, User as UserIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import useAuth from "@/hooks/useAuth"
+import Link from "next/link"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 // Define AUTH_PATHS constant locally instead of importing
 const AUTH_PATHS = {
