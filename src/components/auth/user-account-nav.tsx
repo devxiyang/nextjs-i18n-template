@@ -9,13 +9,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import useAuth from "@/hooks/useAuth"
-import { AuthService } from "@/services/auth.service"
+import { useAuthAction } from "@/hooks/use-auth-action"
+import { signOut } from "@/server/auth.actions"
 import { User } from "@supabase/supabase-js"
 import { Loader2, User as UserIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo } from "react"
 
 // Define AUTH_PATHS constant locally instead of importing
 const AUTH_PATHS = {
@@ -42,10 +42,8 @@ const getUserInitials = (user: User): string => {
 }
 
 export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps) {
-  const auth = useAuth();
+  const { isPending, executeAction } = useAuthAction();
   const t = useTranslations('auth');
-  const [isSigningOut, setIsSigningOut] = useState(false);
-  const initialized = useRef(false);
   
   // Use useMemo to optimize user details calculation - must be defined before any conditional statements
   const userDetails = useMemo(() => {
@@ -58,18 +56,6 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
     
     return { initials, email, name, avatarUrl };
   }, [user]);
-  
-  // Initialize authentication state
-  useEffect(() => {
-    if (!initialized.current && user) {
-      auth.setUser(user);
-      auth.setAuthenticated(true);
-      initialized.current = true;
-    } else if (!user && initialized.current) {
-      // Reset if user becomes null
-      auth.signOut();
-    }
-  }, [user, auth]);
 
   // User navigation menu item configuration
   const userMenuItems = [
@@ -83,23 +69,11 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
   const handleSignOut = async (e: React.MouseEvent) => {
     e.preventDefault();
     
-    // Show loading animation
-    setIsSigningOut(true);
-    
-    // Add timeout logic to prevent endless spinner, only reset state without redirect
-    const timeout = setTimeout(() => {
-      setIsSigningOut(false);
-    }, 3000);
-    
-    // Immediately update authentication state
-    auth.signOut();
-    
-    // Execute server-side logout operation
-    auth.executeAction(
-      async () => await AuthService.signOut(),
+    executeAction(
+      async () => await signOut(),
       () => {
-        clearTimeout(timeout); // If successful, clear the timeout timer
-        window.location.replace(AUTH_PATHS.REDIRECT.AFTER_SIGN_OUT);
+        // After sign out, redirect to home page
+        window.location.href = AUTH_PATHS.REDIRECT.AFTER_SIGN_OUT;
       }
     );
   };
@@ -113,8 +87,8 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
     );
   }
   
-  // If in the process of signing out, show spinner - check if signing out first
-  if (isSigningOut) {
+  // If in the process of signing out, show spinner
+  if (isPending) {
     return (
       <Button variant="ghost" className="relative h-8 w-8 rounded-full" disabled>
         <Loader2 className="h-5 w-5 animate-spin" />
@@ -122,8 +96,8 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
     );
   }
   
-  // If no user or not authenticated, show sign-in button
-  if (!user || !auth.isAuthenticated) {
+  // If no user, show sign-in button
+  if (!user) {
     return (
       <Button asChild variant="outline" size="sm" className="hover:bg-primary/10 px-3 py-2 border-primary/50">
         <Link href="/sign-in" className="flex items-center gap-2">
@@ -167,10 +141,10 @@ export function UserAccountNav({ user, isLoading = false }: UserAccountNavProps)
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
-          disabled={auth.isPending}
+          disabled={isPending}
           onClick={handleSignOut}
         >
-          {auth.isPending ? (
+          {isPending ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
               {t('userNav.signingOut')}
