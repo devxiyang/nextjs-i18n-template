@@ -1,12 +1,10 @@
 # Next.js Internationalization (i18n) Template
 
-A Next.js 15 template project providing complete internationalization (i18n) and authentication capabilities.
+A Next.js 15 template project providing complete internationalization (i18n) capabilities.
 
 ## Features
 
 - Complete internationalization support with `next-intl`
-- Built-in authentication system using Supabase Auth
-- Google OAuth login integration
 - Dark mode support
 - TypeScript support
 - Tailwind CSS styling
@@ -19,7 +17,6 @@ A Next.js 15 template project providing complete internationalization (i18n) and
 ### Prerequisites
 
 - Node.js 18.17 or higher
-- A Supabase project (for authentication)
 
 ### Installation
 
@@ -37,11 +34,7 @@ npm install
 Create a `.env.local` file with the following content:
 
 ```
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-
-# Site URL (for OAuth redirects)
+# Site URL
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
@@ -64,16 +57,14 @@ nextjs-i18n-template/
 │   │   ├── [locale]/      # Internationalized routes
 │   │   └── api/           # API routes
 │   ├── components/        # UI components
-│   │   ├── auth/          # Authentication-related components
 │   │   └── ui/            # Common UI components
 │   ├── config/            # Project configuration
 │   ├── hooks/             # Custom hooks
 │   ├── i18n/              # Internationalization configuration
 │   ├── lib/               # Utility libraries
-│   │   └── supabase/      # Supabase client configuration
 │   ├── server/            # Server-side code and actions
 │   ├── store/             # Zustand state management
-│   └── middleware.ts      # Middleware (i18n + auth)
+│   └── middleware.ts      # Middleware (i18n)
 ```
 
 ## Internationalization Support
@@ -127,77 +118,6 @@ export default async function Page() {
 }
 ```
 
-## Authentication
-
-This template uses Supabase Auth for authentication. It supports the following features:
-
-- Google OAuth login
-- Email link login (passwordless)
-- User profile page
-- Protected routes
-
-### Supabase Setup
-
-1. Create a Supabase project: Visit [Supabase Console](https://app.supabase.com) to create a new project
-2. Get your project URL and anon key: Find these in Project Settings > API
-3. Add them to the `.env.local` environment variables
-
-### Google OAuth Configuration
-
-#### 1. Configure Google OAuth Credentials
-
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Navigate to APIs & Services > Credentials
-4. Click "Create Credentials" and select "OAuth client ID"
-5. Set the Application type to "Web application"
-6. Add a name for your OAuth client
-7. Add authorized JavaScript origins:
-   - For development: `http://localhost:3000`
-   - For production: `https://your-production-domain.com`
-8. Add authorized redirect URIs:
-   - For development: `http://localhost:3000/api/auth/callback`
-   - For production: `https://your-production-domain.com/api/auth/callback`
-9. Click "Create" and note the Client ID and Client Secret
-
-#### 2. Configure Supabase Auth
-
-1. Go to your Supabase project dashboard
-2. Navigate to Authentication > Providers
-3. Find Google and toggle it to enabled
-4. Enter your Google Client ID and Client Secret obtained in the previous step
-5. **Important**: In the "Authorized redirect URIs" field, enter: `https://your-project-ref.supabase.co/auth/v1/callback`
-6. Save the changes
-
-### Using Server Actions for Authentication
-
-This template uses Next.js Server Actions for authentication operations, ensuring security:
-
-```typescript
-// src/server/auth.actions.ts
-'use server';
-
-// Google sign-in
-export async function signInWithGoogle(redirectTo?: string) {
-  // Implementation details...
-}
-
-// Email sign-in
-export async function signInWithEmail(email: string) {
-  // Implementation details...
-}
-
-// Sign out
-export async function signOut() {
-  // Implementation details...
-}
-```
-
-### Protected Routes
-
-1. All routes that require authentication are placed in the `/protected/` directory
-2. The middleware automatically checks user login status and redirects to the login page if not authenticated
-
 ## Zustand State Management
 
 This template includes the Zustand state management library for client-side state.
@@ -208,53 +128,32 @@ This template includes the Zustand state management library for client-side stat
 // Create store
 import { create } from 'zustand';
 
-interface AuthActionStore {
-  isPending: boolean;
-  error: string | null;
-  executeAction: (action, onSuccess?, onError?) => Promise<void>;
+interface DataStore {
+  items: any[];
+  setItems: (items: any[]) => void;
 }
 
-const useAuthAction = create<AuthActionStore>((set) => ({
-  isPending: false,
-  error: null,
-  executeAction: async (action, onSuccess, onError) => {
-    set({ isPending: true, error: null });
-    try {
-      const result = await action();
-      // Process result...
-      set({ isPending: false });
-      if (onSuccess) onSuccess(result);
-    } catch (err) {
-      // Handle error...
-      set({ error: errorMessage, isPending: false });
-      if (onError) onError(errorMessage);
-    }
-  }
+const useDataStore = create<DataStore>((set) => ({
+  items: [],
+  setItems: (items) => set({ items })
 }));
 ```
 
 ### Using in Components
 
 ```typescript
-import { useAuthAction } from '@/hooks/use-auth-action';
-import { signInWithGoogle } from '@/server/auth.actions';
+import { useDataStore } from '@/store/data-store';
 
-function LoginButton() {
-  const { isPending, executeAction } = useAuthAction();
-  
-  const handleLogin = () => {
-    executeAction(
-      () => signInWithGoogle('/dashboard'),
-      (result) => {
-        // Success handling...
-      }
-    );
-  };
+function DataComponent() {
+  const { items, setItems } = useDataStore();
   
   return (
-    <button onClick={handleLogin} disabled={isPending}>
-      {isPending ? 'Loading...' : 'Sign in with Google'}
-    </button>
+    <div>
+      <h1>Data Items: {items.length}</h1>
+      <button onClick={() => setItems([...items, 'new item'])}>
+        Add Item
+      </button>
+    </div>
   );
 }
 ```
@@ -338,48 +237,12 @@ export default async function Layout({ children }) {
 }
 ```
 
-## Troubleshooting
-
-### Google Login Issues
-
-#### Not redirecting to Google login page
-
-1. **Check environment variables**: Make sure `NEXT_PUBLIC_SITE_URL` is correctly set in `.env.local`.
-2. **Open browser console**: Look for any errors when clicking the login button.
-3. **Verify Supabase configuration**: Check that Google provider is enabled in Supabase dashboard.
-4. **Check redirect URI**: In Google Cloud Console, ensure the redirect URI matches exactly what's in your code.
-
-#### Google login succeeds but no user created
-
-1. **Check Supabase callback URL**: In Supabase dashboard, make sure the callback URL is correct. It should be in the form of `https://your-project-ref.supabase.co/auth/v1/callback`.
-2. **Check logs**: Open your browser console and check for any errors when redirecting back from Google.
-3. **Verify Supabase setup**: Make sure your Supabase project is properly set up with Google OAuth credentials.
-4. **Check network requests**: Monitor network requests during the login process to see if there are any errors.
-
-#### Redirect URI mismatch errors
-
-1. Make sure the redirect URI in your code, Google Cloud Console, and Supabase all match exactly.
-2. For local development, use `http://localhost:3000/api/auth/callback`.
-3. For production, use your actual domain like `https://your-domain.com/api/auth/callback`.
-
-### Debugging Tips
-
-1. Use browser console to see error messages.
-2. Check network requests in the browser's developer tools Network tab.
-3. In Supabase dashboard, check Auth > Logs for any authentication attempts and their status.
-
 ## Customization
-
-### Modifying Authentication Providers
-
-1. Enable desired authentication providers in the Supabase dashboard
-2. Add corresponding login buttons in `src/components/auth/auth-providers.tsx`
 
 ### Adding New Pages
 
 1. Create new pages in the `src/app/[locale]/` directory
 2. If internationalization is required, add necessary translation keys in the respective translation files
-3. For protected pages, place them in the `protected/` directory
 
 ## License
 

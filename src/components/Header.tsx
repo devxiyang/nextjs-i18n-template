@@ -2,7 +2,6 @@
 
 import LocaleSwitcher from '@/components/LocaleSwitcher';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
-import { UserAccountNav } from '@/components/auth/user-account-nav';
 import {
   Sheet,
   SheetContent,
@@ -13,49 +12,14 @@ import {
 } from "@/components/ui/sheet";
 import { navigation, siteConfig } from '@/config/site.config';
 import { Link } from '@/i18n/navigation';
-import { createClient } from '@/lib/supabase/client';
-import { User } from '@supabase/supabase-js';
 import { Menu, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from './ui/button';
 
 export default function Header() {
   const t = useTranslations('common');
-  const authT = useTranslations('auth');
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      setIsLoading(true);
-      try {
-        const supabase = createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUser();
-
-    // Set up Supabase auth state change listener
-    const supabase = createClient();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        const newUser = session?.user ?? null;
-        setUser(newUser);
-      }
-    );
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   return (
     <header className="sticky top-0 w-full py-4 px-6 bg-background/95 backdrop-blur-sm text-foreground z-40 border-b border-border/20">
@@ -84,9 +48,6 @@ export default function Header() {
           <LocaleSwitcher />
           
           <ThemeSwitcher />
-          
-          {/* Always show UserAccountNav and let it handle authentication UI */}
-          <UserAccountNav user={user} isLoading={isLoading} />
           
           {/* Mobile Menu */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -126,17 +87,6 @@ export default function Header() {
                     {t(`nav.${item.name.toLowerCase()}`)}
                   </Link>
                 ))}
-                
-                {/* Add login/register link on mobile */}
-                {!user && (
-                  <Link
-                    href="/sign-in"
-                    className="px-6 py-3 hover:bg-accent/70 hover:text-accent-foreground transition-colors rounded-l-md"
-                    onClick={() => setOpen(false)}
-                  >
-                    {authT('header.signInRegister')}
-                  </Link>
-                )}
               </nav>
             </SheetContent>
           </Sheet>
