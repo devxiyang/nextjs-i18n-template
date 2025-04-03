@@ -1,12 +1,11 @@
 import Header from '@/components/Header';
+import { siteConfig } from '@/config/site.config';
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from "next-themes";
 import { Inter, Source_Code_Pro } from "next/font/google";
 import { notFound } from 'next/navigation';
 import "./globals.css";
-import { siteConfig } from '@/config/site.config';
-import { createClient } from '@/lib/supabase/server';
 
 // Load fonts
 const inter = Inter({
